@@ -80,11 +80,17 @@ https://mapserver.org/documentation.html
 
 ## 5. Installation
 
-### Extract the zip
+### Get the project files (ZIP or Git)
 
+**Option A — ZIP**
 ```bash
 unzip Mapfile-Preview.zip
 cd Mapfile-Preview
+```
+**Option B — GIT**
+```bash
+git clone <REPOSITORY_URL>
+cd <REPOSITORY_FOLDER>
 ```
 
 ### Install dependencies (UI + API)
