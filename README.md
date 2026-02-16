@@ -87,6 +87,17 @@ https://mapserver.org/documentation.html
 unzip Mapfile-Preview.zip
 cd Mapfile-Preview
 ```
+The ZIP file can be found at https://github.com/Consortis-Geospatial/Mapfile-Preview/
+ under the **Code** tab.
+<img width="750" height="479" alt="image" src="https://github.com/user-attachments/assets/102aaea6-6dd2-4609-9af2-7a6fd623f4fe" />
+
+Alternatively, you can use the releases listed in the Releases section on the right side of the GitHub page.
+<img width="750" height="430" alt="image" src="https://github.com/user-attachments/assets/db0f16ce-f7a3-490f-b81a-be0a3bf29e5f" />
+
+Once you click Releases, it will open and you can choose the version you want. For example:
+<img width="750" height="361" alt="image" src="https://github.com/user-attachments/assets/20dee738-f058-4372-a4d3-bd012510b8e9" />
+
+
 **Option B — GIT**
 ```bash
 git clone <REPOSITORY_URL>
