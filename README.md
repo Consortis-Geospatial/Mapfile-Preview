@@ -69,10 +69,10 @@ https://mapserver.org/documentation.html
 
 ## 4. Prerequisites
 
-- **Node.js:** Not specified in repository (recommend **Node 18+**)
+- **Node.js:** recommend **Node 20+**
 - **Package manager:** **npm** (package-lock files present)
 - **External services / software:**
-  - **MapServer** (required)
+  - **MapServer 8+** (required)
     - Local `mapserv` binary path (for validation)
     - HTTP base URL for MapServer CGI (for preview)
   - **Mapfile Teacher (optional):**
@@ -98,10 +98,12 @@ Once you click Releases, it will open and you can choose the version you want. F
 <img width="750" height="361" alt="image" src="https://github.com/user-attachments/assets/20dee738-f058-4372-a4d3-bd012510b8e9" />
 
 
-**Option B — GIT**
+**Option B — Git (recommended)**
+Clone the repository to get the latest code (requires **Git** installed), then enter the project folder:
+
 ```bash
-git clone <REPOSITORY_URL>
-cd <REPOSITORY_FOLDER>
+git clone https://github.com/Consortis-Geospatial/Mapfile-Preview.git
+cd Mapfile-Preview
 ```
 
 ## Install dependencies
@@ -204,11 +206,23 @@ Example:
 
 ### UI configuration
 
+The UI is configured via a small JSON file (e.g., `config.json`) and browser-local preferences.
 
-- **API base URL:** defaults to `http://localhost:4300`
-- **Theme / language / Teacher PDF path:** stored in the browser (local preferences)
+Example `config.json`:
+```json
+{
+  "language": "el",
+  "theme": "light",
+  "use_AI": true,
+  "apiURL": "http://localhost:4300"
+}
+```
 
-If you run the API on a different host/port, make sure the UI is configured (or deployed behind a proxy) to reach the API correctly.
+- **apiURL:** base URL of the API backend (default: `http://localhost:4300`)
+- **language / theme / use_AI:** UI defaults
+- **Teacher PDF path (and some other preferences):** stored in the browser (local preferences)
+
+If you run the API on a different host/port, update `apiURL` (or deploy the UI behind a proxy) so the UI can reach the API correctly.
 
 ## 7. Running the App (Dev / Prod)
 
