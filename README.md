@@ -89,7 +89,7 @@ cd Mapfile-Preview
 ```
 The ZIP file can be found at https://github.com/Consortis-Geospatial/Mapfile-Preview/
  under the **Code** tab.
-<img width="750" height="479" alt="image" src="https://github.com/user-attachments/assets/102aaea6-6dd2-4609-9af2-7a6fd623f4fe" />
+<img width="1004" height="649" alt="image" src="https://github.com/user-attachments/assets/5fe456a8-0bc0-41b2-a25b-1aec971a9239" />
 
 Alternatively, you can use the releases listed in the Releases section on the right side of the GitHub page.
 <img width="750" height="430" alt="image" src="https://github.com/user-attachments/assets/db0f16ce-f7a3-490f-b81a-be0a3bf29e5f" />
@@ -104,8 +104,22 @@ git clone <REPOSITORY_URL>
 cd <REPOSITORY_FOLDER>
 ```
 
+## Install dependencies
+
+These steps download all required packages for the project.
+
+### Before you start
+- **Windows:** Open **Command Prompt** as **Administrator**.
+- Go to the folder where you **unzipped** the project:
+  1. In the Command Prompt, type `cd ` (with a space at the end)
+  2. Drag & drop the unzipped project folder into the Command Prompt window (it will paste the full path)
+  3. Press **Enter**
+
+---
+
 ### Install dependencies (UI + API)
 
+#### UI
 UI:
 
 ```bash
