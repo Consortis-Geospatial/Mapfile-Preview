@@ -119,7 +119,6 @@ These steps download all required packages for the project.
 
 ### Install dependencies (UI + API)
 
-#### UI
 UI:
 
 ```bash
