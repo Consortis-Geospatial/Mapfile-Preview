@@ -115,8 +115,6 @@ These steps download all required packages for the project.
   2. Drag & drop the unzipped project folder into the Command Prompt window (it will paste the full path)
   3. Press **Enter**
 
----
-
 ### Install dependencies (UI + API)
 
 UI:
