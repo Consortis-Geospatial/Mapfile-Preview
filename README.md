@@ -210,9 +210,9 @@ Example:
 
 If you run the API on a different host/port, make sure the UI is configured (or deployed behind a proxy) to reach the API correctly.
 
-### 7. Running the App (Dev / Prod)
+## 7. Running the App (Dev / Prod)
 
-## Development (two terminals)
+### Development (two terminals)
 
 You will run the project in **two separate terminal windows**:
 - **API (server)** runs in one terminal
@@ -222,7 +222,7 @@ You will run the project in **two separate terminal windows**:
 
 ---
 
-## 1) Open Terminal #1 (API)
+#### 1) Open Terminal #1 (API)
 - **Windows:** Open **Command Prompt** as **Administrator**.
 
 Go to the **project root folder** (the folder that contains `client` and `server`):
@@ -243,7 +243,7 @@ What to expect:
 
 ---
 
-## 2) Open Terminal #2 (UI)
+#### 2) Open Terminal #2 (UI)
 - **Windows:** Open a **second** Command Prompt as **Administrator**.
 
 Again, go to the **same project root folder** (the one that contains `client` and `server`).
@@ -261,7 +261,7 @@ What to expect:
 
 ---
 
-## 3) Open the app in your browser
+#### 3) Open the app in your browser
 
 Default URLs:
 - UI: `http://localhost:4200`
@@ -271,7 +271,7 @@ Usually you only need to open the **UI** link. The UI will talk to the API in th
 
 ---
 
-## 4) How to stop the app
+#### 4) How to stop the app
 In **each** terminal window, press:
 
 - `Ctrl + C`
