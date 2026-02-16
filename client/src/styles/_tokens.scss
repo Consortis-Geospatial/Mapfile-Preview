@@ -1,0 +1,93 @@
+@use '@angular/material' as mat;
+mat.$theme-ignore-duplication-warnings: true;
+/* ---------- App tokens (brand + scales) ---------- */
+$color-primary: #1769aa;
+$color-accent: #ff7a59;
+
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+
+// Z-index scale
+$z-toolbar: 1000;
+$z-gutter: 900;
+$z-dialog: 2000;
+
+:root {
+  --z-toolbar: #{$z-toolbar};
+  --z-gutter: #{$z-gutter};
+  --z-dialog: #{$z-dialog};
+  --color-primary: #{$color-primary};
+  --color-accent: #{$color-accent};
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-5: #{$space-5};
+  --space-6: #{$space-6};
+  --space-8: #{$space-8};
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+}
+
+/* Core resets/utilities can be emitted once globally (outside a selector). */
+@include mat.core();
+
+/* ---------- THEME (LIGHT) ---------- */
+$theme: mat.define-theme((color: (theme-type: light,
+        primary: mat.$blue-palette,
+        /* M3 uses 'tertiary' as the "accent" counterpart */
+        tertiary: mat.$orange-palette ),
+      typography: (brand-family: ('Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif),
+        plain-family: ('Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif),
+        bold-weight: 600),
+      density: (scale: 0)));
+
+/* ⬇️ Wrap M3 theme mixins inside a selector */
+:root:not([data-theme]) {
+  @include mat.core-theme($theme);
+  @include mat.all-component-themes($theme);
+}
+
+/* ---------- MANUAL THEME (data-theme) ----------
+   Use <html data-theme="light|dark"> to force a theme,
+   regardless of OS (prefers-color-scheme).
+------------------------------------------------- */
+:root[data-theme='light'] {
+  @include mat.core-color($theme);
+  @include mat.all-component-colors($theme);
+}
+
+:root[data-theme='dark'] {
+  $manual-dark-theme: mat.define-theme((color: (theme-type: dark,
+          primary: mat.$blue-palette,
+          tertiary: mat.$orange-palette ),
+        typography: (brand-family: ('Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif),
+          plain-family: ('Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif),
+          bold-weight: 600),
+        density: (scale: 0)));
+
+  @include mat.core-color($manual-dark-theme);
+  @include mat.all-component-colors($manual-dark-theme);
+}
+
+/* ---------- OPTIONAL: AUTO DARK COLORS ---------- */
+@media (prefers-color-scheme: dark) {
+  $dark-theme: mat.define-theme((color: (theme-type: dark,
+          primary: mat.$blue-palette,
+          tertiary: mat.$orange-palette )));
+
+  :root:not([data-theme]) {
+    @include mat.core-color($dark-theme);
+    @include mat.all-component-colors($dark-theme);
+  }
+}

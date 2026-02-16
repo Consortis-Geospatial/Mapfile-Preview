@@ -1,0 +1,61 @@
+<ng-container *ngIf="state$ | async as s">
+  <div class="mp-teacher-backdrop" *ngIf="s.open" (click)="onBackdropClick()" aria-hidden="true"></div>
+
+  <section class="mp-teacher-panel" *ngIf="s.open" role="dialog" aria-modal="true"
+    [attr.aria-labelledby]="'mpTeacherTitle'" [attr.aria-describedby]="'mpTeacherDesc'">
+
+    <header class="mp-teacher-header">
+      <div class="mp-teacher-head-left">
+        <span class="mp-teacher-icon" aria-hidden="true"></span>
+        <h2 class="mp-teacher-title" id="mpTeacherTitle">{{ 'MP_TEACHER.TITLE' | translate }}</h2>
+      </div>
+
+      <button type="button" class="mp-teacher-close" [attr.aria-label]="'MP_TEACHER.CLOSE' | translate"
+        (click)="close()">×</button>
+    </header>
+
+    <div class="mp-teacher-body" id="mpTeacherDesc">
+      <details class="mp-teacher-details">
+        <summary class="mp-teacher-details-summary">
+          <span class="mp-teacher-details-icon" aria-hidden="true"></span>
+          {{ 'SETTINGS.TITLE' | translate }}
+        </summary>
+
+        <div class="mp-teacher-settings">
+
+          <label class="mp-teacher-label">
+            <span [innerHTML]="'MP_TEACHER.PDF_PATH_LABEL_HTML' | translate"></span>
+            <input class="mp-teacher-input" [(ngModel)]="pdfPath" (blur)="savePdfPath()"
+              placeholder="C:\\Consortis_Projects\\MapHelper.pdf" />
+          </label>
+
+
+          <div class="mp-teacher-settings-row">
+            <button type="button" class="mp-teacher-btn" data-role="cancel" (click)="clearChat()">{{
+              'MP_TEACHER.CLEAR_CHAT' | translate }}</button>
+          </div>
+        </div>
+      </details>
+
+      <div class="mp-teacher-chat" #scrollEl>
+        <div class="mp-msg" *ngFor="let m of messages" [attr.data-role]="m.role">
+          <div class="mp-bubble">
+            <div class="mp-text" [innerHTML]="m.html"></div>
+
+          </div>
+        </div>
+
+        <div class="mp-typing" *ngIf="sending">…</div>
+      </div>
+    </div>
+
+    <footer class="mp-teacher-actions">
+      <textarea class="mp-teacher-textarea" [(ngModel)]="draft" (keydown)="onDraftKeydown($event)"
+        [placeholder]="'MP_TEACHER.QUESTION_PLACEHOLDER' | translate"></textarea>
+
+      <button type="button" class="mp-teacher-send" [disabled]="sending || !(draft || '').trim()" (click)="send()">
+        {{ 'MP_TEACHER.SEND' | translate }}
+      </button>
+    </footer>
+  </section>
+</ng-container>

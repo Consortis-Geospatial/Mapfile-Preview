@@ -1,0 +1,64 @@
+<mat-toolbar color="primary">
+  <button mat-button class="brand cluster">
+    <mat-icon>public</mat-icon>
+    <span>{{ 'TOP_MENU.BRAND' | translate }}</span>
+  </button>
+
+  <span class="spacer"></span>
+
+  <!-- File -->
+  <button mat-button [matMenuTriggerFor]="file"><mat-icon>description</mat-icon> {{ 'TOP_MENU.FILE' | translate
+    }}</button>
+  <mat-menu #file="matMenu">
+    <button mat-menu-item (click)="newFile.emit()"><mat-icon>insert_drive_file</mat-icon><span>{{ 'TOP_MENU.NEW' |
+        translate }}</span></button>
+    <button mat-menu-item (click)="quickNewFile.emit()"><mat-icon>bolt</mat-icon><span>{{ 'TOP_MENU.QUICK_NEW' |
+        translate }}</span></button>
+    <button mat-menu-item (click)="openFile.emit()"><mat-icon>folder_open</mat-icon><span>{{ 'TOP_MENU.OPEN' | translate
+        }}</span></button>
+    <mat-divider></mat-divider>
+
+    <button mat-menu-item (click)="saveSampleFile.emit()"><mat-icon>save_alt</mat-icon><span>{{ 'TOP_MENU.SAVE_SAMPLE' |
+        translate
+        }}</span></button>
+    <button mat-menu-item (click)="saveFile.emit()"><mat-icon>save</mat-icon><span>{{ 'TOP_MENU.SAVE' | translate
+        }}</span></button>
+    <button mat-menu-item (click)="saveAsFile.emit()"><mat-icon>save_as</mat-icon><span>{{ 'TOP_MENU.SAVE_AS' |
+        translate
+        }}</span></button>
+  </mat-menu>
+
+  <!-- Format -->
+  <button mat-button [matMenuTriggerFor]="formatMenu"><mat-icon>format_align_left</mat-icon> {{ 'TOP_MENU.FORMAT' |
+    translate }}</button>
+  <mat-menu #formatMenu="matMenu">
+    <button mat-menu-item (click)="format.emit()"><mat-icon>code</mat-icon><span>{{ 'TOP_MENU.FORMAT_DOCUMENT' |
+        translate }}</span></button>
+    <button mat-menu-item (click)="validate.emit()"><mat-icon>rule</mat-icon><span>{{ 'TOP_MENU.VALIDATE_MAPFILE' |
+        translate }}</span></button>
+    <button mat-menu-item (click)="autoMetadata.emit()"><mat-icon>auto_awesome</mat-icon><span>{{
+        'TOP_MENU.AUTO_METADATA' | translate }}</span></button>
+  </mat-menu>
+
+  <!-- Preview -->
+  <button mat-button [matMenuTriggerFor]="preview"><mat-icon>preview</mat-icon> {{ 'TOP_MENU.PREVIEW' | translate
+    }}</button>
+  <mat-menu #preview="matMenu">
+    <button mat-menu-item (click)="previewWms.emit()"><mat-icon>image</mat-icon><span>{{ 'TOP_MENU.WMS' | translate
+        }}</span></button>
+    <button mat-menu-item (click)="previewWfs.emit()"><mat-icon>map</mat-icon><span>{{ 'TOP_MENU.WFS' | translate
+        }}</span></button>
+    <button mat-menu-item (click)="previewCgi.emit()"><mat-icon>dns</mat-icon><span>{{ 'TOP_MENU.CGI' | translate
+        }}</span></button>
+  </mat-menu>
+
+  <button *ngIf="showTeacher" mat-button class="teacher-btn" (click)="openTeacher.emit()">
+    <mat-icon>school</mat-icon>
+    <span>{{ 'TOP_MENU.TEACHER_ARIA' | translate }}</span>
+  </button>
+
+  <!-- Settings -->
+  <button mat-stroked-button class="settings-btn" (click)="openSettings.emit()">
+    <mat-icon>tune</mat-icon><span>{{ 'TOP_MENU.SETTINGS' | translate }}</span>
+  </button>
+</mat-toolbar>

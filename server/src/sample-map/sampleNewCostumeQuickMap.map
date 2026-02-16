@@ -1,0 +1,165 @@
+MAP
+    DEFRESOLUTION 96
+    EXTENT 9040.52066115694 3850810 1102909.47933884 4623930
+    FONTSET "D:\Program Files\MapManager\templates\font.list"
+    IMAGETYPE "png24"
+    NAME "MS"
+    RESOLUTION 96
+    SHAPEPATH ""
+    SIZE 857 606
+    STATUS ON
+    SYMBOLSET "D:\Program Files\MapManager\templates\symbols.sym"
+    UNITS METERS
+
+    OUTPUTFORMAT
+        NAME "png24"
+        MIMETYPE "image/png"
+        DRIVER "AGG/PNG"
+        EXTENSION "png"
+        IMAGEMODE RGB
+        TRANSPARENT FALSE
+    END # OUTPUTFORMAT
+
+    OUTPUTFORMAT
+        NAME "geojson"
+        MIMETYPE "application/json; subtype=geojson; charset=utf-8"
+        DRIVER "OGR/GEOJSON"
+        IMAGEMODE FEATURE
+        TRANSPARENT FALSE
+        FORMATOPTION "STORAGE=stream"
+        FORMATOPTION "FORM=SIMPLE"
+    END # OUTPUTFORMAT
+
+    OUTPUTFORMAT
+        NAME "CSV"
+        MIMETYPE "text/csv"
+        DRIVER "OGR/CSV"
+        IMAGEMODE FEATURE
+        TRANSPARENT FALSE
+        FORMATOPTION "LCO:GEOMETRY=AS_WKT"
+        FORMATOPTION "STORAGE=filesystem"
+        FORMATOPTION "FORM=simple"
+        FORMATOPTION "LCO:COORDINATE_PRECISION=4"
+        FORMATOPTION "FILENAME=result.csv"
+    END # OUTPUTFORMAT
+
+    OUTPUTFORMAT
+        NAME "SHAPEZIP"
+        DRIVER "OGR/ESRI Shapefile"
+        IMAGEMODE FEATURE
+        TRANSPARENT FALSE
+        FORMATOPTION "STORAGE=filesystem"
+        FORMATOPTION "FORM=zip"
+        FORMATOPTION "LCO:COORDINATE_PRECISION=4"
+        FORMATOPTION "FILENAME=shapefile.zip"
+    END # OUTPUTFORMAT
+
+    PROJECTION
+        "EPSG:2100"
+    END # PROJECTION
+    LEGEND
+        KEYSIZE 20 10
+        KEYSPACING 5 5
+        LABEL
+            SIZE 10
+            OFFSET 0 0
+            SHADOWSIZE 1 1
+        END # LABEL
+        STATUS OFF
+    END # LEGEND
+
+    QUERYMAP
+        STATUS OFF
+        STYLE HILITE
+    END # QUERYMAP
+
+    SCALEBAR
+        INTERVALS 4
+        LABEL
+            SIZE 10
+            OFFSET 0 0
+            SHADOWSIZE 1 1
+        END # LABEL
+        SIZE 200 3
+        STATUS OFF
+        UNITS MILES
+    END # SCALEBAR
+
+    WEB
+        METADATA
+            #
+            # WMS/OWS specific metadata. Τα ows_* ισχύουν τόσο για WMS όσο και για WFS
+            #
+
+            "wms_languages"                     "el,eng"                                   # Οι κωδικοί των γλωσσών που υποστηρίζονται χωρισμένοι με κόμμα σύμφωνα με το ISO 639-2/B. Η πρώτη θεωρείται η default γλώσσα.
+            "wms_keywordlist_ISO_items"         "infoMapAccessService"                     # value according "classification of spatial data services" https://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceCategory
+            "wms_keywordlist_vocabulary"        "GEMET,ISO"                                # Default
+            #
+            # Βάζοντας "ows_*" δε χρειάζεται να έχετε διαφορετικά "wms_*"  και "wfs_*" metadata
+            # Αφού έχουμε ορίσει δύο γλώσσες παραπάνω, πρέπει να έχουμε και δύο ows_*.<lang>
+            #
+            "ows_title.el"                      "Χαρτογραφικές Υπηρεσίες DEMO"      # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - To όνομα του ΣΥΝΟΛΙΚΟΥ MAPSERVICE (για όλα τα επίπεδα)
+            "ows_title.en"                      "DEMO Municipality OGC Services"           # Το παραπάνω στα Αγγλικά
+            "ows_abstract.el"                   "Χαρτογραφικές Υπηρεσίες  Δήμου DEMO συμβατές με τα πρότυπα OGC και INSPIRE"   # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - Σύντομη περιγραφή για το ποια επίπεδα περιλαμβάνονται και τι είναι.
+            "ows_abstract.en"                   "DEMO Municipality OGC/INSPIRE Services"                                        # Το παραπάνω στα Αγγλικά
+            #
+            # ΠΟΛΥ ΣΗΜΑΝΤΙΚΟ το παρακάτω να είναι το σωστό. Είναι απαραίτητο για να προβάλεται το WMS/WFS σε άλλες εφαρμογές (π.χ. QGIS)
+            # OTAN ΚΑΙ ΑΝ ΚΑΝΟΥΜΕ ΤΙΣ ΑΛΛΑΓΕΣ ΣΤΟΥΣ WEB SERVERS ΓΙΑ ΝΑ ΚΡΥΒΕΤΑΙ ΤΟ MAPFILE PATH, ΑΥΤΟ ΘΑ ΠΡΕΠΕΙ ΝΑ ΑΛΛΑΞΕΙ ΑΝΤΙΣΤΟΙΧΑ
+            #
+            "ows_onlineresource"                "https://gis.consortis.gr/mapserver/mapserv?map=C:\\data\\maps\\DEMO.map"
+            #
+            # Προβολικά συστήματα που υποστηρίζονται για να είναι συμβατά με INSPIRE
+            # ΠΡΟΣΟΧΗ: Στη περίπτωση μας (EVRYMAP) το EPSG:2100 θα πρέπει να είναι πρώτο.
+            #
+            "wms_srs"                           "EPSG:2100 EPSG:4326 EPSG:3857 EPSG:3034 EPSG:3035 EPSG:3038 EPSG:3039 EPSG:3040 EPSG:3041 EPSG:3042 EPSG:3043 EPSG:3044 EPSG:3045 EPSG:3046 EPSG: EPSG:4258 CRS:84"
+
+            "wms_bbox_extended"                 "true"                                        #Απαιτείται λόγω INSPIRE WMS
+
+            "ows_service_onlineresource"        "https://gis.DEMO.gr/"                       # (νομίζω ότι) εδώ βάζουμε το γενικό website
+
+            "wms_enable_request"                "*"                                           # Επιτρέπονται όλα τα WMS requests
+            "wms_sld_enabled"                   "true"                                        # Default
+            "wms_feature_info_mime_type"        "geojson"                                     # For use by EVRYMAP so identify and select will return geojson data
+            #
+            # ΜΕΤΑΔΕΔΟΜΕΝΑ ΓΙΑ INSPIRE VIEW SERVICE (WMS)
+            #
+            "wms_inspire_capabilities"          "embed"                                       # "Ενεργοποιεί" το inspire σύμφωνα με το scenario 2. Βλ. https://mapserver.org/ogc/inspire.html
+            "ows_inspire_temporal_reference"    "2021-01-25"                                  # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - date of last revision, value according YYYY-MM-DD
+            "ows_inspire_mpoc_name"             "Municipality of DEMO"                   # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - Το όνομα αυτού που είναι υπεύθυνος για τα δεδομένα
+            "ows_inspire_mpoc_email"            "otakas1@otenet.gr"                           # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - Το email του Υπεύθυνου
+            "ows_inspire_metadatadate"          "2011-09-19"                                  # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - ΠΑΝΤΑ στη μορφή YYYY-MM-DD
+            "ows_inspire_resourcelocator"       "http://207.180.226.188:8765/catalogue/csw?"  # (νομίζω ότι) εδώ βάζουμε το URL για το catalog service και στη δική μας περίπτωση το url όπου τρέχει το geonode/PYCSV
+            "ows_inspire_keyword"               "infoMapAccessService"                        # Σε όλα τα παραδείγματα αυτή τη τιμή βλέπω. Σύμφωνα με τα "classification of spatial data services". Οπότε το κρατάμε έτσι
+            "ows_keywordlist_ISO_items"         "infoMapAccessService"                        # Όπως και παραπάνω
+            "ows_keywordlist_vocabulary"        "wms,wfs,gml,geojson,mapserver,parcels,pois"  # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ- μπορείτε να βάλετε τα ψιλο-standard (wms,wfs,gml..) αλλά και keywords για τα ίδια τα δεδομένα
+            "ows_fees"                          "no conditions apply"                         # ΣΥΝΗΘΩΣ ΑΥΤΟ ΧΡΗΣΙΜΟΠΟΙΕΙΤΑΙ - value either "no conditions apply"|default "conditions unknown"|<specific conditions>
+            "ows_accessconstraints"             "None"                                        # ΣΥΝΗΘΩΣ ΑΥΤΟ ΧΡΗΣΙΜΟΠΟΙΕΙΤΑΙ - τιμή σύμφωνα με το ISO 19115 (MD_RestrictionCode codelist) or default "None"
+            "ows_contactperson"                 "Municipality of DEMO"                   # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - Το όνομα αυτού που είναι υπεύθυνος για τα δεδομένα
+            "ows_contactorganization"           "Municipality of DEMO"                   # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - Ο οργανισμός/υπηρεσία η οποία δημοσιεύει αυτά τα δεδομένα
+            "ows_contactposition"               "Data Administrator"                          # ΑΛΛΑΖΕΙ ΑΝΑΛΟΓΑ ΜΕ ΤΑ ΔΕΔΟΜΕΝΑ ΠΟΥ ΕΧΕΤΕ - Η θέση του ατόμου που είναι υπεύθυνος για τα δεδομένα
+            #
+            # WFS specific metadata
+            # ΣΗΜΕΙΩΣΗ: Σε ότι αφορό το EVRYMAP, τα WFS settings είναι υποχρεωτικά μόνο όταν θα χρειαστεί να κάνουμε editing σε κάποιο layer.
+            # Στη περίπτωση αυτού του παραδείγματος αφού έχουμε βάλει τα WFS settings στο επίπεδο του MAP, μπορούμε να κάνουμε WFS requests σε όλα τα layers.
+            # Αυτό δεν είναι απαραίτητο ότι θα δουλέψει ΑΝ το layer μας είναι π.χ. raster εικόνες (βλ. παράδειγμα το layer του κτηματολογίου από κάτω)
+            # Αν σε κάποιο layer ΔΕ θέλετε να επιτρέψετε ΚΑΝΕΝΑ WFS request, μπορείτε να βάλετε στα metadata του layer to "wfs_enable_request"  "!"
+            #
+            "wfs_languages"                     "el,eng"                                       # Οι κωδικοί των γλωσσών που υποστηρίζονται χωρισμένοι με κόμμα σύμφωνα με το ISO 639-2/B. Η πρώτη θεωρείται η default γλώσσα.
+            #
+            # Προβολικά συστήματα που υποστηρίζονται για να είναι συμβατά με INSPIRE
+            # ΠΡΟΣΟΧΗ: Στη περίπτωση μας (EVRYMAP) το EPSG:2100 θα πρέπει να είναι πρώτο. Αλλιώς δε θα
+            # εμφανιστεί το vector layer όταν κάνουμε editing.
+            #
+            "wfs_srs"                           "EPSG:2100 EPSG:4326 EPSG:3857 EPSG:3034 EPSG:3035 EPSG:3038 EPSG:3039 EPSG:3040 EPSG:3041 EPSG:3042 EPSG:3043 EPSG:3044 EPSG:3045 EPSG:3046 EPSG: EPSG:4258 CRS:84"
+            "wfs_enable_request"                "*"                                           # Επιτρέπονται όλα τα WFS requests
+            #
+            # ΜΕΤΑΔΕΔΟΜΕΝΑ ΓΙΑ INSPIRE DOWNLOAD SERVICE-WFS (Τα υπόλοιπα υποχρεωτικά πεδία είναι παραπάνω στα ows_^ settings)
+            #
+            "wfs_inspire_capabilities"          "embed"                                       # "Ενεργοποιεί" το inspire σύμφωνα με το scenario 2. Βλ. https://mapserver.org/ogc/inspire.html
+            "wfs_inspire_dsid_code"             "f6e23399-d1c7-4124-8f29-d2781ece6a0f"        # ΠΡΟΣΟΧΗ- ΠΡΕΠΕΙ ΝΑ ΑΛΛΑΖΕΙ ΓΙΑ ΚΑΘΕ MAPFILE. Μπορείτε να πάρετε εύκολα νέα GUID από το https://www.guidgen.com/ (ή και από αλλού)
+            "wfs_inspire_dsid_ns"               "https://DEMO.gr/"
+        END # METADATA
+    END # WEB
+
+   
+END # MAP

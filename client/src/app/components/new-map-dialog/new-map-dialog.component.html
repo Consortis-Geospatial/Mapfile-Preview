@@ -1,0 +1,311 @@
+<div mat-dialog-title class="dlg-titlebar">
+  <span class="dlg-icon" aria-hidden="true">{{ quickCostume ? '⚡' : '＋' }}</span>
+  <div class="dlg-titles">
+    <div class="dlg-title">{{ (quickCostume ? 'NEW_MAP.QUICK_TITLE' : 'NEW_MAP.TITLE') | translate }}</div>
+    <div class="dlg-subtitle">{{ (quickCostume ? 'NEW_MAP.QUICK_SUBTITLE' : 'NEW_MAP.SUBTITLE') | translate }}</div>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content class="content">
+    <div class="dlg-chip">ℹ️ {{ 'NEW_MAP.TIP_LABEL' | translate }}</div>
+    <p class="dlg-summary"><span [innerHTML]="'NEW_MAP.TIP_TEXT_HTML' | translate"></span></p>
+
+    <div class="grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_NAME' | translate }}</mat-label>
+        <input matInput formControlName="name" placeholder="My new map (optional)" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_ALIAS_OPTIONAL' | translate }}</mat-label>
+        <input matInput formControlName="alias" placeholder="MY_MAP" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_FILE_NAME' | translate }}</mat-label>
+        <input matInput formControlName="fileName" placeholder="my_map.map (optional)" />
+      </mat-form-field>
+
+      <mat-checkbox formControlName="overwrite">{{ 'NEW_MAP.CHECKBOX_OVERWRITE_IF_EXISTS' | translate }}</mat-checkbox>
+
+      <mat-form-field *ngIf="!quickCostume" appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_EPSG' | translate }}</mat-label>
+        <input matInput type="number" formControlName="epsg" />
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!quickCostume" appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_UNITS' | translate }}</mat-label>
+        <mat-select formControlName="units">
+          <mat-option value="METERS">METERS</mat-option>
+          <mat-option value="DD">DD</mat-option>
+          <mat-option value="FEET">FEET</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!quickCostume" appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_SIZE_X' | translate }}</mat-label>
+        <input matInput type="number" formControlName="sizeX" />
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!quickCostume" appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_SIZE_Y' | translate }}</mat-label>
+        <input matInput type="number" formControlName="sizeY" />
+      </mat-form-field>
+    </div>
+
+    <h3 *ngIf="!quickCostume" class="section">{{ 'NEW_MAP.H3_EXTENT' | translate }}</h3>
+    <div *ngIf="!quickCostume" class="grid grid-4">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_MINX' | translate }}</mat-label>
+        <input matInput type="number" formControlName="extentMinX" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_MINY' | translate }}</mat-label>
+        <input matInput type="number" formControlName="extentMinY" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_MAXX' | translate }}</mat-label>
+        <input matInput type="number" formControlName="extentMaxX" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'NEW_MAP.LABEL_MAXY' | translate }}</mat-label>
+        <input matInput type="number" formControlName="extentMaxY" />
+      </mat-form-field>
+    </div>
+
+    <details *ngIf="!quickCostume" class="dlg-details">
+      <summary>{{ 'NEW_MAP.SUMMARY_OPTIONAL_PATHS' | translate }}</summary>
+      <div class="dlg-details-body">
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_SHAPEPATH' | translate }}</mat-label>
+            <input matInput formControlName="shapePath" placeholder="C:/data/maps" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_FONTSET' | translate }}</mat-label>
+            <input matInput formControlName="fontsetPath" placeholder="D:/.../font.list" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_SYMBOLSET' | translate }}</mat-label>
+            <input matInput formControlName="symbolsetPath" placeholder="D:/.../symbols.sym" />
+          </mat-form-field>
+        </div>
+      </div>
+    </details>
+
+    <details *ngIf="!quickCostume" class="dlg-details">
+      <summary>{{ 'NEW_MAP.SUMMARY_OPTIONAL_OGC_OWS_METADATA' | translate }}</summary>
+      <div class="dlg-details-body">
+        <p class="dlg-note">
+          Τα παρακάτω μετατρέπονται σε <code>WEB/METADATA</code> σε επίπεδο <code>MAP</code>.
+          (π.χ. <code>ows_title.el</code>, <code>wms_srs</code>, <code>wms_enable_request</code>).
+        </p>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_SERVICE_IDENTITY_MULTI_LANGUAGE' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_TITLE_EL' | translate }}</mat-label>
+            <input matInput formControlName="owsTitleEl" placeholder="Χαρτογραφικές Υπηρεσίες ..." />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_TITLE_EN' | translate }}</mat-label>
+            <input matInput formControlName="owsTitleEn" placeholder="OGC Services ..." />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_ABSTRACT_EL' | translate }}</mat-label>
+            <input matInput formControlName="owsAbstractEl" placeholder="Σύντομη περιγραφή ..." />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_ABSTRACT_EN' | translate }}</mat-label>
+            <input matInput formControlName="owsAbstractEn" placeholder="Short description ..." />
+          </mat-form-field>
+        </div>
+
+        <details class="dlg-details inner">
+          <summary>{{ 'NEW_MAP.SUMMARY_LEGACY_SINGLE_LANGUAGE_OPTIONAL' | translate }}</summary>
+          <div class="dlg-details-body">
+            <div class="grid">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'NEW_MAP.LABEL_OWS_TITLE_LEGACY' | translate }}</mat-label>
+                <input matInput formControlName="title" placeholder="Service title" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'NEW_MAP.LABEL_OWS_ABSTRACT_LEGACY' | translate }}</mat-label>
+                <input matInput formControlName="abstract" placeholder="Short description" />
+              </mat-form-field>
+            </div>
+          </div>
+        </details>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_URLS' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_ONLINERESOURCE' | translate }}</mat-label>
+            <input matInput formControlName="owsOnlineResource" placeholder="https://.../mapserver/mapserv?map=..." />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_SERVICE_ONLINERESOURCE' | translate }}</mat-label>
+            <input matInput formControlName="owsServiceOnlineResource" placeholder="https://.../" />
+          </mat-form-field>
+        </div>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_LANGUAGES' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_LANGUAGES' | translate }}</mat-label>
+            <input matInput formControlName="wmsLanguages" placeholder="el,eng" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WFS_LANGUAGES' | translate }}</mat-label>
+            <input matInput formControlName="wfsLanguages" placeholder="el,eng" />
+          </mat-form-field>
+        </div>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_CRS_SRS' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_SRS' | translate }}</mat-label>
+            <input matInput formControlName="wmsSrs" placeholder="EPSG:2100 EPSG:4326 EPSG:3857 CRS:84" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WFS_SRS' | translate }}</mat-label>
+            <input matInput formControlName="wfsSrs" placeholder="EPSG:2100 EPSG:4326 EPSG:3857 CRS:84" />
+          </mat-form-field>
+        </div>
+        <mat-checkbox formControlName="wmsBboxExtended">{{ 'NEW_MAP.CHECKBOX_WMS_BBOX_EXTENDED_COSTUME' | translate
+          }}</mat-checkbox>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_ENABLE_REQUESTS' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_ENABLE_REQUEST' | translate }}</mat-label>
+            <input matInput formControlName="wmsEnableRequest" placeholder="*" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WFS_ENABLE_REQUEST' | translate }}</mat-label>
+            <input matInput formControlName="wfsEnableRequest" placeholder="*" />
+          </mat-form-field>
+        </div>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_WMS_EXTRAS' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_FEATUREINFO_MIME_TYPE' | translate }}</mat-label>
+            <input matInput formControlName="wmsFeatureInfoMimeType" placeholder="geojson" />
+          </mat-form-field>
+          <div></div>
+        </div>
+        <mat-checkbox formControlName="wmsSldEnabled">{{ 'NEW_MAP.CHECKBOX_WMS_SLD_ENABLED' | translate
+          }}</mat-checkbox>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_KEYWORDS' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_KEYWORDLIST_ISO_ITEMS' | translate }}</mat-label>
+            <input matInput formControlName="wmsKeywordlistIsoItems" placeholder="infoMapAccessService" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_KEYWORDLIST_VOCABULARY' | translate }}</mat-label>
+            <input matInput formControlName="wmsKeywordlistVocabulary" placeholder="GEMET,ISO" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_KEYWORDLIST_ISO_ITEMS' | translate }}</mat-label>
+            <input matInput formControlName="owsKeywordlistIsoItems" placeholder="infoMapAccessService" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_OWS_KEYWORDLIST_VOCABULARY' | translate }}</mat-label>
+            <input matInput formControlName="owsKeywordlistVocabulary" placeholder="wms,wfs,gml,geojson,mapserver" />
+          </mat-form-field>
+        </div>
+      </div>
+    </details>
+
+    <details *ngIf="!quickCostume" class="dlg-details">
+      <summary>{{ 'NEW_MAP.SUMMARY_OPTIONAL_COSTUME' | translate }}</summary>
+      <div class="dlg-details-body">
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WMS_COSTUME_CAPABILITIES' | translate }}</mat-label>
+            <input matInput formControlName="wmsCostumeCapabilities" placeholder="embed" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_WFS_COSTUME_CAPABILITIES' | translate }}</mat-label>
+            <input matInput formControlName="wfsCostumeCapabilities" placeholder="embed" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_TEMPORAL_REFERENCE_YYYY_MM_DD' | translate }}</mat-label>
+            <input matInput formControlName="owsCostumeTemporalReference" placeholder="2021-01-25" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_METADATA_DATE_YYYY_MM_DD' | translate }}</mat-label>
+            <input matInput formControlName="owsCostumeMetadataDate" placeholder="2011-09-19" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_MPOC_NAME' | translate }}</mat-label>
+            <input matInput formControlName="owsCostumeMpocName" placeholder="Organization" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_MPOC_EMAIL' | translate }}</mat-label>
+            <input matInput formControlName="owsCostumeMpocEmail" placeholder="contact@example.com" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_RESOURCE_LOCATOR_CATALOGUE_CSW' | translate }}</mat-label>
+            <input matInput formControlName="owsCostumeResourceLocator" placeholder="https://.../catalogue/csw?" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_COSTUME_KEYWORD' | translate }}</mat-label>
+            <input matInput formControlName="owsCostumeKeyword" placeholder="infoMapAccessService" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_FEES' | translate }}</mat-label>
+            <input matInput formControlName="owsFees" placeholder="no conditions apply" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_ACCESS_CONSTRAINTS' | translate }}</mat-label>
+            <input matInput formControlName="owsAccessConstraints" placeholder="None" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_CONTACT_PERSON' | translate }}</mat-label>
+            <input matInput formControlName="owsContactPerson" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_CONTACT_ORGANIZATION' | translate }}</mat-label>
+            <input matInput formControlName="owsContactOrganization" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_CONTACT_POSITION' | translate }}</mat-label>
+            <input matInput formControlName="owsContactPosition" />
+          </mat-form-field>
+          <div></div>
+        </div>
+
+        <h4 class="subsection">{{ 'NEW_MAP.H4_WFS_DSID' | translate }}</h4>
+        <div class="grid">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_DSID_CODE_GUID' | translate }}</mat-label>
+            <input matInput formControlName="wfsCostumeDsidCode" placeholder="(auto if empty and WFS Costume is set)" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'NEW_MAP.LABEL_DSID_NAMESPACE' | translate }}</mat-label>
+            <input matInput formControlName="wfsCostumeDsidNs" placeholder="https://example.org/" />
+          </mat-form-field>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div mat-dialog-actions class="dlg-actions" align="end">
+    <button mat-button type="button" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">{{ 'COMMON.CREATE' | translate
+      }}</button>
+  </div>
+</form>

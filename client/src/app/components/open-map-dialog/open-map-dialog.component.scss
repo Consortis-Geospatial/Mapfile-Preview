@@ -1,0 +1,157 @@
+/* Dialog styling aligned with InfoAlert “feel” (same as new-map-dialog) */
+
+.dlg-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px 10px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(27, 110, 243, 0.04);
+}
+
+.dlg-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  line-height: 1;
+  user-select: none;
+  background: rgba(27, 110, 243, 0.12);
+  color: #1b6ef3;
+}
+
+.dlg-titles {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dlg-title {
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+
+.dlg-subtitle {
+  font-size: 12.5px;
+  opacity: 0.72;
+  line-height: 1.3;
+}
+
+.content {
+  max-height: 70vh;
+  overflow: auto;
+  padding-top: 12px;
+}
+
+.dlg-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 750;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+}
+
+.dlg-summary {
+  margin: 0 0 12px 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.dlg-summary strong {
+  font-weight: 750;
+}
+
+.dlg-details {
+  margin: 8px 0 12px 0;
+}
+
+.dlg-details summary {
+  cursor: pointer;
+  font-weight: 700;
+  margin: 10px 0 8px 0;
+}
+
+.dlg-pre {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.grid mat-form-field {
+  width: 100%;
+}
+
+.dlg-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 12px 14px 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.dlg-actions button {
+  border-radius: 12px;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Global dialog backdrop blur (match InfoAlert)
+   ───────────────────────────────────────────────────────────── */
+::ng-deep .cdk-overlay-backdrop.cdk-overlay-dark-backdrop,
+::ng-deep .cdk-overlay-backdrop.mat-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Material form-field fixes
+   1) Reserve vertical space for hint/error text so it doesn't
+      overlap the next grid row.
+   2) Add a bit more inner padding so the value doesn't sit on
+      the outline stroke.
+   Scoped to this dialog only.
+   ───────────────────────────────────────────────────────────── */
+
+:host ::ng-deep .content .mat-mdc-form-field {
+  /* One line of hint/error + breathing room */
+  margin-bottom: 16px;
+}
+
+:host ::ng-deep .content .mat-mdc-form-field .mat-mdc-form-field-infix {
+  /* Helps both <input matInput> and <mat-select> */
+  padding-left: 14px;
+  padding-right: 14px;
+}

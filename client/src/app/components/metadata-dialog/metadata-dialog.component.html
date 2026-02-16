@@ -1,0 +1,97 @@
+<h2 mat-dialog-title class="dialog-title">{{ 'AUTO_METADATA.TITLE' | translate }}</h2>
+
+<mat-dialog-content class="dialog-content">
+    <div class="grid">
+        <div class="section">
+            <div class="section-title">{{ 'AUTO_METADATA.INSERT_FOR' | translate }}</div>
+            <mat-radio-group [(ngModel)]="target" (ngModelChange)="onTargetChange()" class="radio-row">
+                <mat-radio-button value="layer">{{ 'AUTO_METADATA.TARGET_LAYER' | translate }}</mat-radio-button>
+                <mat-radio-button value="web">{{ 'AUTO_METADATA.TARGET_WEB' | translate }}</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="section" *ngIf="target === 'layer'">
+            <div class="section-title">{{ 'AUTO_METADATA.LAYER_TYPE' | translate }}</div>
+            <mat-form-field appearance="fill" class="full">
+                <mat-label>TYPE</mat-label>
+                <mat-select [(ngModel)]="layerType" (selectionChange)="onLayerTypeChange()">
+                    <mat-option value="POINT">POINT</mat-option>
+                    <mat-option value="LINE">LINE</mat-option>
+                    <mat-option value="POLYGON">POLYGON</mat-option>
+                    <mat-option value="RASTER">RASTER</mat-option>
+                    <mat-option value="CIRCLE">CIRCLE</mat-option>
+                    <mat-option value="CHART">CHART</mat-option>
+                    <mat-option value="QUERY">QUERY</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="section">
+            <div class="section-title">{{ 'AUTO_METADATA.INCLUDE' | translate }}</div>
+            <div class="checklist">
+                <mat-checkbox [(ngModel)]="includeOws" (change)="onAnyChange()">{{ 'AUTO_METADATA.OWS_GENERIC' | translate }}</mat-checkbox>
+                <mat-checkbox [(ngModel)]="includeWms" (change)="onAnyChange()">{{ 'AUTO_METADATA.WMS' | translate }}</mat-checkbox>
+
+                <mat-checkbox [(ngModel)]="includeWfs" (change)="onAnyChange()"
+                    [disabled]="target === 'layer' && !isVectorLayer()">{{ 'AUTO_METADATA.WFS' | translate }}</mat-checkbox>
+
+                <mat-checkbox [(ngModel)]="includeWcs" (change)="onAnyChange()"
+                    [disabled]="target === 'layer' && !isRasterLayer()">{{ 'AUTO_METADATA.WCS' | translate }}</mat-checkbox>
+            </div>
+        </div>
+
+        <div class="section" *ngIf="target === 'layer' && includeWfs && isVectorLayer()">
+            <div class="section-title">{{ 'AUTO_METADATA.WFS_GML_HELPERS' | translate }}</div>
+
+            <mat-checkbox [(ngModel)]="includeGmlHelpers" (change)="onAnyChange()">{{ 'AUTO_METADATA.INCLUDE_GML_HELPERS' | translate }}</mat-checkbox>
+
+            <div class="row" *ngIf="includeGmlHelpers">
+                <mat-form-field appearance="fill" class="half">
+                    <mat-label>{{ 'AUTO_METADATA.GML_FEATUREID_FIELD' | translate }}</mat-label>
+                    <input matInput [(ngModel)]="gmlFeatureIdField" (input)="onAnyChange()" />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="half">
+                    <mat-label>{{ 'AUTO_METADATA.GML_INCLUDE_ITEMS' | translate }}</mat-label>
+                    <input matInput [(ngModel)]="gmlIncludeItems" (input)="onAnyChange()" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="section" *ngIf="target === 'layer' && includeWcs && isRasterLayer()">
+            <div class="section-title">{{ 'AUTO_METADATA.WCS_DETAILS' | translate }}</div>
+
+            <div class="row">
+                <mat-form-field appearance="fill" class="half">
+                    <mat-label>wcs_label</mat-label>
+                    <input matInput [(ngModel)]="wcsLabel" (input)="onAnyChange()" />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="half">
+                    <mat-label>wcs_formats</mat-label>
+                    <input matInput [(ngModel)]="wcsFormats" (input)="onAnyChange()" />
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">{{ 'AUTO_METADATA.OUTPUT' | translate }}</div>
+            <div class="checklist">
+                <mat-checkbox [(ngModel)]="wrapBlock" (change)="onAnyChange()">{{ 'AUTO_METADATA.WRAP_BLOCK' | translate }}</mat-checkbox>
+                <mat-checkbox [(ngModel)]="includeComments" (change)="onAnyChange()">{{ 'AUTO_METADATA.INCLUDE_COMMENTS' | translate }}</mat-checkbox>
+            </div>
+        </div>
+
+        <div class="section preview-section">
+            <div class="section-title">{{ 'AUTO_METADATA.PREVIEW' | translate }}</div>
+            <mat-form-field appearance="fill" class="full">
+                <textarea matInput [value]="preview" readonly rows="12" class="preview"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button mat-flat-button color="primary" (click)="insert()">{{ 'AUTO_METADATA.INSERT' | translate }}</button>
+</mat-dialog-actions>

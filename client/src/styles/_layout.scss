@@ -1,0 +1,72 @@
+@use 'styles/tokens' as *;
+@use 'styles/mixins' as *; 
+
+// App-shell primitives
+.app-shell {
+  height: 100%;
+  min-height: 100vh; /* keep as safety for very tall pages */
+  display: grid;
+  grid-template-rows: 64px minmax(0, 1fr);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.container { padding-inline: var(--space-6); }
+
+.stack > * + *         { margin-top: var(--space-4); }
+.cluster { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+
+// Utility classes
+.bordered { border: 1px solid rgba(0,0,0,.06); border-radius: var(--radius-md); }
+.muted    { color: var(--color-muted); }
+.elevated { box-shadow: var(--shadow-md); }
+
+// Angular Material toolbar polish
+.mat-toolbar {
+  position: sticky; top: 0; z-index: $z-toolbar;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: saturate(1.2) blur(6px);
+}
+.spacer { flex: 1 1 auto; }
+
+// angular-split: improve gutter affordance
+as-split {
+  --gutter-color: rgba(0,0,0,.08);
+  --gutter-hover: rgba(0,0,0,.15);
+
+  .as-split-gutter {
+    background: var(--gutter-color);
+    transition: background .2s ease;
+    z-index: $z-gutter;
+  }
+  .as-split-gutter:hover, .as-split-gutter:focus {
+    background: var(--gutter-hover);
+  }
+  .as-split-gutter .as-split-gutter-icon {
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(transparent 45%, rgba(0,0,0,.25) 45%, rgba(0,0,0,.25) 55%, transparent 55%),
+      linear-gradient(90deg, transparent 45%, rgba(0,0,0,.25) 45%, rgba(0,0,0,.25) 55%, transparent 55%);
+    background-size: 8px 8px, 8px 8px;
+    background-position: center;
+  }
+}
+
+@media (pointer: coarse) {
+    as-split .as-split-gutter {
+      width: 12px !important;  /* bigger touch target on mobile/tablets */
+    }
+}
+
+// Leaflet polish
+.leaflet-container {
+  font-family: inherit;
+  @include thin-scrollbar;
+}
+.leaflet-control, .leaflet-bar a, .leaflet-popup-content-wrapper {
+  @include card;
+}
+.leaflet-control-container .leaflet-top.leaflet-right {
+  margin-right: var(--space-4);
+  margin-top: var(--space-4);
+}

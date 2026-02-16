@@ -1,0 +1,83 @@
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+  height: 100%;
+  min-height: 200px;
+  /* safety for very small viewports */
+}
+
+.map-surface {
+  position: relative;
+  /* Leaflet adds absolutely-positioned panes */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* prevents scrollbars during split drag */
+}
+
+/* If any global styles accidentally constrain .leaflet-container */
+:host ::ng-deep .leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Dark theme: “negative” map colors (tiles + overlays), keep controls normal */
+:host-context(html[data-theme='dark']) ::ng-deep .leaflet-tile-pane,
+:host-context(html[data-theme='dark']) ::ng-deep .leaflet-overlay-pane {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Προαιρετικό: για να μη φαίνεται “γκρι” πίσω από tiles με transparency */
+:host-context(html[data-theme='dark']) .map-surface {
+  background: #000;
+}
+
+/* map-pane.component.scss */
+
+.map-surface {
+  height: 100%;
+  width: 100%;
+  background: #000;
+  /* fallback */
+}
+
+/* Dark theme: invert μόνο τα map panes (όχι τα controls) */
+:host-context(html[data-theme='dark']) ::ng-deep {
+
+  .leaflet-tile-pane,
+  .leaflet-overlay-pane {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
+  /* Αν θες σιγουριά ότι controls δεν πειράζονται */
+  .leaflet-control-container {
+    filter: none;
+  }
+
+  /* --- Layers widget (το δικό σου) -> γκρι --- */
+  .layers-widget {
+    background: rgba(45, 45, 45, 0.92) !important;
+    color: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  /* legend εικόνες: κράτα τες “καθαρές” για να διαβάζονται */
+  .layers-widget img {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+
+  /* Προαιρετικό hover για τα rows */
+  .layers-widget label:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Αν χρησιμοποιείς και built-in leaflet control-layers κάπου */
+  .leaflet-control-layers {
+    background: rgba(45, 45, 45, 0.92);
+    color: rgba(255, 255, 255, 0.92);
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+}

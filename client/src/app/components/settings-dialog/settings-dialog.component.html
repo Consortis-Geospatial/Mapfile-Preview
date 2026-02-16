@@ -1,0 +1,55 @@
+<div mat-dialog-title class="dlg-titlebar">
+  <span class="dlg-icon" aria-hidden="true">⚙️</span>
+  <div class="dlg-titles">
+    <div class="dlg-title">{{ 'SETTINGS.TITLE' | translate }}</div>
+    <div class="dlg-subtitle">{{ 'SETTINGS.SUBTITLE' | translate }}</div>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content class="content">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">{{ 'SETTINGS.LANG_SECTION_TITLE' | translate }}</div>
+        <div class="section-subtitle">{{ 'SETTINGS.LANG_SECTION_SUBTITLE' | translate }}</div>
+      </div>
+
+      <mat-button-toggle-group formControlName="lang" class="toggle-group" aria-label="Language">
+        <mat-button-toggle value="el" class="toggle">
+          <img class="flag" src="../../../assets/icons/greekFlag.png" alt="Greek flag" />
+          <span>{{ 'SETTINGS.LANG_EL' | translate }}</span>
+        </mat-button-toggle>
+
+        <mat-button-toggle value="en" class="toggle">
+          <img class="flag" src="../../../assets/icons/englishFlag.png" alt="English flag" />
+          <span>{{ 'SETTINGS.LANG_EN' | translate }}</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">{{ 'SETTINGS.THEME_SECTION_TITLE' | translate }}</div>
+        <div class="section-subtitle">{{ 'SETTINGS.THEME_SECTION_SUBTITLE' | translate }}</div>
+      </div>
+
+      <mat-button-toggle-group formControlName="theme" class="toggle-group" aria-label="Theme">
+        <mat-button-toggle value="light" class="toggle">
+          <span class="emoji" aria-hidden="true">🌞</span>
+          <span>{{ 'SETTINGS.THEME_LIGHT' | translate }}</span>
+        </mat-button-toggle>
+
+        <mat-button-toggle value="dark" class="toggle">
+          <span class="emoji" aria-hidden="true">🌙</span>
+          <span>{{ 'SETTINGS.THEME_DARK' | translate }}</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="dlg-actions" align="end">
+    <button mat-button type="button" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button mat-raised-button color="primary" type="submit" class="apply-btn">{{ 'COMMON.APPLY' | translate }}</button>
+  </div>
+</form>

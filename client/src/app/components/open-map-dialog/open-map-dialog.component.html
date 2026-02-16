@@ -1,0 +1,38 @@
+<div mat-dialog-title class="dlg-titlebar">
+  <span class="dlg-icon" aria-hidden="true">📂</span>
+  <div class="dlg-titles">
+    <div class="dlg-title">{{ 'OPEN_MAP.TITLE' | translate }}</div>
+    <div class="dlg-subtitle">{{ 'OPEN_MAP.SUBTITLE' | translate }}</div>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content class="content">
+    <div class="dlg-chip">ℹ️ {{ 'OPEN_MAP.TIP_LABEL' | translate }}</div>
+    <p class="dlg-summary"><span [innerHTML]="'OPEN_MAP.TIP_TEXT_HTML' | translate"></span></p>
+
+    <details class="dlg-details">
+      <summary>{{ 'OPEN_MAP.EXAMPLES_SUMMARY' | translate }}</summary>
+      <pre class="dlg-pre">{{ 'OPEN_MAP.EXAMPLES_PRE' | translate }}</pre>
+    </details>
+
+    <div class="grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'OPEN_MAP.ALIAS' | translate }}</mat-label>
+        <input matInput formControlName="allias" placeholder="MY_MAP" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'OPEN_MAP.PATH' | translate }}</mat-label>
+        <input matInput formControlName="path" placeholder="subfolder/my_map.map" />
+      </mat-form-field>
+
+      <mat-checkbox formControlName="overwrite">{{ 'OPEN_MAP.OVERWRITE_ALIAS' | translate }}</mat-checkbox>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="dlg-actions" align="end">
+    <button mat-button type="button" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">{{ 'COMMON.OPEN' | translate }}</button>
+  </div>
+</form>

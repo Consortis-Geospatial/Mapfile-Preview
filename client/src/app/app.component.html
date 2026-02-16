@@ -1,0 +1,21 @@
+<app-info-alert></app-info-alert>
+<app-mapserver-teacher-dialog></app-mapserver-teacher-dialog>
+
+<div class="app-shell">
+  <app-top-menu (newFile)="handleNewFile()" (quickNewFile)="handleQuickNewCostume()" (openFile)="handleOpenFile()"
+    (saveFile)="handleSaveFile()" (saveAsFile)="handleSaveAsFile()" (saveSampleFile)="handleSaveSample()" (format)="handleFormat()"
+    (validate)="handleValidate()" (autoMetadata)="handleAutoMetadata()" (previewWms)="handlePreviewWms()"
+    (previewWfs)="handlePreviewWfs()" (previewCgi)="handlePreviewCgi()" (openSettings)="handleOpenSettings()"
+    (openTeacher)="handleOpenTeacher()"></app-top-menu>
+
+  <as-split [direction]="splitDirection" [gutterSize]="gutterSize" unit="percent" style="height: 100%; min-height: 0;"
+    (dragEnd)="notifyMapResized()">
+    <as-split-area [size]="40" class="panel bordered">
+      <app-editor-pane (contentChange)="onEditorChange($event)" (saveRequest)="handleSaveFile()"></app-editor-pane>
+    </as-split-area>
+    <as-split-area [size]="60" class="panel">
+      <app-map-pane (mapReady)="onMapReady()"></app-map-pane>
+    </as-split-area>
+  </as-split>
+
+</div>

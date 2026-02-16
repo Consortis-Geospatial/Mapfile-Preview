@@ -1,0 +1,77 @@
+<div mat-dialog-title class="dlg-titlebar">
+  <span class="dlg-icon" aria-hidden="true">🧩</span>
+  <div class="dlg-titles">
+    <div class="dlg-title">{{ title || ('LAYER_PICKER.TITLE' | translate) }}</div>
+    <div class="dlg-subtitle">{{ subtitle || ('LAYER_PICKER.SUBTITLE' | translate) }}</div>
+  </div>
+</div>
+
+<div mat-dialog-content class="content">
+  <div class="dlg-chip">🧭 {{ 'LAYER_PICKER.CHIP' | translate }}</div>
+  <p class="dlg-summary">
+    {{ 'LAYER_PICKER.FOUND' | translate }} <strong>{{ total }}</strong> {{ 'LAYER_PICKER.WFS_LAYERS' | translate }}<br />
+    {{ 'LAYER_PICKER.CHOOSE' | translate }} <strong>1</strong> {{ 'LAYER_PICKER.ONLY' | translate }}
+    {{ 'LAYER_PICKER.LAYER' | translate }} {{ 'LAYER_PICKER.FOR_PREVIEW' | translate }}
+  </p>
+
+  <mat-form-field appearance="outline" class="search">
+    <mat-label>{{ 'LAYER_PICKER.SEARCH_LABEL' | translate }}</mat-label>
+    <input matInput [formControl]="searchCtrl" [placeholder]="'LAYER_PICKER.SEARCH_PLACEHOLDER' | translate" />
+  </mat-form-field>
+
+  <ng-container *ngIf="filteredLayers() as fl">
+    <div class="bulk-row" *ngIf="fl.length > 0">
+      <div class="bulk-meta">
+        <span>{{ 'LAYER_PICKER.SELECTED' | translate }}: <strong>{{ selectedCtrl.value?.name || '—' }}</strong></span>
+      </div>
+
+      <button mat-button type="button" (click)="clearSelection()" [disabled]="!selectedCtrl.value">
+        {{ 'COMMON.CLEAR' | translate }}
+      </button>
+    </div>
+
+    <div class="list" *ngIf="fl.length > 0; else empty">
+      <mat-radio-group class="check-group" [formControl]="selectedCtrl">
+        <div
+          class="layer-wrap"
+          *ngFor="let l of fl"
+          [class.is-disabled]="isWfsDisabled(l)"
+          [matTooltip]="wfsReasonsTooltip(l)"
+          [matTooltipDisabled]="!isWfsDisabled(l)"
+          matTooltipPosition="above"
+          matTooltipClass="wfs-tooltip"
+        >
+          <mat-radio-button
+            class="layer-row"
+            [class.is-disabled]="isWfsDisabled(l)"
+            [value]="l"
+            (change)="selectLayer(l)"
+            [disabled]="isWfsDisabled(l)"
+          >
+            <span class="warn-tri" *ngIf="isWfsDisabled(l)" aria-hidden="true"></span>
+
+            <div class="layer-row-inner">
+              <div class="layer-main">
+                <div class="layer-name">{{ l.name }}</div>
+                <div class="layer-title" *ngIf="layerTitle(l)">{{ layerTitle(l) }}</div>
+              </div>
+
+              <div class="layer-type" *ngIf="l.type">{{ l.type }}</div>
+            </div>
+          </mat-radio-button>
+        </div>
+      </mat-radio-group>
+    </div>
+
+    <ng-template #empty>
+      <div class="empty">{{ 'LAYER_PICKER.EMPTY' | translate }}</div>
+    </ng-template>
+  </ng-container>
+</div>
+
+<div mat-dialog-actions class="dlg-actions" align="end">
+  <button mat-button type="button" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" type="button" (click)="pick()" [disabled]="!selectedCtrl.value">
+    {{ 'COMMON.LOAD' | translate }}
+  </button>
+</div>

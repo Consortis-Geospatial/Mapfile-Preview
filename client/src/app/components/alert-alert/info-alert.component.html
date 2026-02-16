@@ -1,0 +1,43 @@
+<ng-container *ngIf="state$ | async as s">
+  <div class="info-alert-backdrop" *ngIf="s.open" (click)="onBackdropClick(s)" aria-hidden="true"></div>
+
+  <section class="info-alert-panel" *ngIf="s.open" role="dialog" aria-modal="true"
+    [attr.aria-labelledby]="'infoAlertTitle'" [attr.aria-describedby]="'infoAlertDesc'">
+    <header class="info-alert-header" [attr.data-variant]="s.variant">
+      <div class="info-alert-head-left">
+        <span class="info-alert-icon" [attr.data-variant]="s.variant" aria-hidden="true"></span>
+        <h2 class="info-alert-title" id="infoAlertTitle">{{ s.title || ('ALERT.DEFAULT_TITLE' | translate) }}</h2>
+      </div>
+
+      <button *ngIf="s.dismissOnBackdrop" type="button" class="info-alert-close" [attr.aria-label]="'ALERT.CLOSE_ARIA' | translate" (click)="close()">
+        ×
+      </button>
+    </header>
+
+    <div class="info-alert-body" id="infoAlertDesc">
+      <!-- If there is an LLM answer: show it at the top, raw error in Details -->
+      <ng-container *ngIf="hasLlmAnswer(s); else rawOnly">
+
+        <p class="info-alert-summary">{{ s.llmAnswer }}</p>
+
+        <details class="info-alert-details">
+          <summary class="info-alert-details-summary"><span class="info-alert-details-icon"
+              aria-hidden="true"></span>{{ 'ALERT.DETAILS_SUMMARY' | translate }}</summary>
+          <pre class="info-alert-pre">{{ getRawError(s) }}</pre>
+        </details>
+      </ng-container>
+
+      <!-- No LLM answer: show raw error directly -->
+      <ng-template #rawOnly>
+        <pre class="info-alert-pre">{{ getRawError(s) }}</pre>
+      </ng-template>
+    </div>
+
+    <footer class="info-alert-actions">
+      <button type="button" class="info-alert-btn" *ngFor="let b of s.buttons" [attr.data-role]="b.role || 'confirm'"
+        [attr.data-variant]="s.variant" (click)="onButtonClick(b)">
+        {{ b.text }}
+      </button>
+    </footer>
+  </section>
+</ng-container>

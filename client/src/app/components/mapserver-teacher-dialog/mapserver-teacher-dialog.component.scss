@@ -1,0 +1,494 @@
+.mp-teacher-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(1.5px);
+  z-index: 10000;
+  animation: mp-fade 120ms ease-out;
+}
+
+.mp-teacher-panel {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(760px, calc(100vw - 32px));
+  max-height: min(82vh, calc(100vh - 40px));
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  z-index: 10001;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  animation: mp-pop 140ms ease-out;
+}
+
+.mp-teacher-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(27, 110, 243, 0.06);
+}
+
+.mp-teacher-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mp-teacher-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(27, 110, 243, 0.12);
+  color: #1b6ef3;
+  font-weight: 900;
+  user-select: none;
+}
+
+.mp-teacher-icon::before {
+  content: '🤖';
+  transform: translateY(-1px);
+}
+
+.mp-teacher-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: 0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mp-teacher-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.mp-teacher-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.mp-teacher-body {
+  padding: 12px 14px 8px 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.mp-teacher-details summary {
+  cursor: pointer;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  list-style: none;
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.mp-teacher-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.mp-teacher-details-icon::before {
+  content: '▸';
+  display: inline-block;
+  width: 1em;
+}
+
+.mp-teacher-details[open] .mp-teacher-details-icon::before {
+  content: '▾';
+}
+
+.mp-teacher-settings {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mp-teacher-label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.mp-teacher-input {
+  width: 80%;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #fff;
+  font: inherit;
+  font-weight: 500;
+}
+
+.mp-teacher-input:focus {
+  outline: none;
+  border-color: rgba(27, 110, 243, 0.4);
+  box-shadow: 0 0 0 3px rgba(27, 110, 243, 0.12);
+}
+
+.mp-teacher-settings-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.mp-teacher-btn {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-weight: 650;
+  background: #fff;
+  margin-top: 10px;
+}
+
+.mp-teacher-btn[data-role='cancel'] {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mp-teacher-chat {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mp-msg {
+  display: flex;
+}
+
+.mp-msg[data-role='user'] {
+  justify-content: flex-end;
+}
+
+.mp-msg[data-role='assistant'] {
+  justify-content: flex-start;
+}
+
+.mp-bubble {
+  width: min(620px, 100%);
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.mp-msg[data-role='user'] .mp-bubble {
+  background: rgba(27, 110, 243, 0.1);
+  border-color: rgba(27, 110, 243, 0.22);
+}
+
+.mp-text {
+  word-break: break-word;
+  font-size: 13.5px;
+  line-height: 1.45;
+
+  :is(p, ul, ol, pre, blockquote, h1, h2, h3, h4, h5, h6) {
+    margin: 0 0 8px 0;
+  }
+
+  :is(p, ul, ol, pre, blockquote, h1, h2, h3, h4, h5, h6):last-child {
+    margin-bottom: 0;
+  }
+
+  ul,
+  ol {
+    padding-left: 18px;
+  }
+
+  li {
+    margin: 2px 0;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  /* inline code */
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12.5px;
+    padding: 0.15em 0.35em;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* code blocks */
+  pre {
+    white-space: pre;
+    overflow: auto;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  pre code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  blockquote {
+    padding-left: 10px;
+    border-left: 3px solid rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+.mp-sources {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mp-source-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mp-typing {
+  font-size: 12.5px;
+  color: rgba(0, 0, 0, 0.55);
+  padding: 2px 6px;
+}
+
+.mp-teacher-actions {
+  display: flex;
+  gap: 10px;
+  padding: 12px 12px 14px 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.mp-teacher-textarea {
+  flex: 1;
+  min-height: 44px;
+  max-height: 120px;
+  resize: vertical;
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #fff;
+  font: inherit;
+  font-size: 13.5px;
+}
+
+.mp-teacher-textarea:focus {
+  outline: none;
+  border-color: rgba(27, 110, 243, 0.4);
+  box-shadow: 0 0 0 3px rgba(27, 110, 243, 0.12);
+}
+
+.mp-teacher-send {
+  appearance: none;
+  border: 1px solid rgba(27, 110, 243, 0.35);
+  border-radius: 12px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  background: rgba(27, 110, 243, 0.1);
+  color: #1b6ef3;
+  transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 50ms ease;
+}
+
+.mp-teacher-send:hover:not(:disabled) {
+  background: rgba(27, 110, 243, 0.16);
+  border-color: rgba(27, 110, 243, 0.45);
+}
+
+.mp-teacher-send:active:not(:disabled) {
+  transform: translateY(0.5px);
+}
+
+.mp-teacher-send:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@keyframes mp-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mp-pop {
+  from {
+    transform: translate(-50%, -49%) scale(0.98);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.mp-teacher-settings-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mp-teacher-settings-row .mp-teacher-btn {
+  margin-top: 0;
+}
+
+/* Dark theme (driven by documentElement[data-theme='dark']) */
+:host-context([data-theme='dark']) .mp-teacher-panel {
+  background: rgba(18, 19, 22, 0.98);
+  box-shadow: 0 26px 64px rgba(0, 0, 0, 0.55);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-header {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  background: rgba(27, 110, 243, 0.14);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-title,
+:host-context([data-theme='dark']) .mp-teacher-body,
+:host-context([data-theme='dark']) .mp-text {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+
+
+/* Dark theme tweaks for markdown rendering */
+:host-context([data-theme='dark']) .mp-text {
+  code {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  pre {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  blockquote {
+    border-left-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.82);
+  }
+}
+
+:host-context([data-theme='dark']) .mp-teacher-close {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-details summary {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-settings {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-input,
+:host-context([data-theme='dark']) .mp-teacher-textarea {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-btn[data-role='cancel'] {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-settings-hint {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+:host-context([data-theme='dark']) .mp-bubble {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:host-context([data-theme='dark']) .mp-msg[data-role='user'] .mp-bubble {
+  background: rgba(27, 110, 243, 0.22);
+  border-color: rgba(127, 176, 255, 0.35);
+}
+
+:host-context([data-theme='dark']) .mp-source-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+:host-context([data-theme='dark']) .mp-typing {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-actions {
+  border-top-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-send {
+  background: rgba(127, 176, 255, 0.28);
+  border-color: rgba(127, 176, 255, 0.6);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-send:hover:not(:disabled) {
+  background: rgba(127, 176, 255, 0.36);
+  border-color: rgba(127, 176, 255, 0.72);
+}
+
+:host-context([data-theme='dark']) .mp-teacher-backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}

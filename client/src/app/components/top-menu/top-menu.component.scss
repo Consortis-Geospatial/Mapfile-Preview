@@ -1,0 +1,43 @@
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+mat-toolbar {
+  height: 64px;
+  padding-inline: var(--space-4);
+}
+
+.brand {
+  gap: var(--space-2);
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+button[mat-button],
+button[mat-stroked-button] {
+  text-transform: none;
+}
+
+mat-menu mat-icon {
+  margin-right: var(--space-2);
+}
+
+/* πιο καμπυλωτό (Material 3 / MDC shape token) */
+.settings-btn {
+  --mdc-outlined-button-container-shape: 18px;
+  /* δοκίμασε 16–24px ή 999px για pill */
+  border-radius: 18px;
+}
+
+/* για να ακολουθούν και ripple/focus layers την καμπύλη */
+.settings-btn .mdc-button__ripple,
+.settings-btn .mat-mdc-button-persistent-ripple,
+.settings-btn .mat-mdc-focus-indicator {
+  border-radius: inherit;
+}
+
+.teacher-btn {
+  margin-right: var(--space-2);
+}
