@@ -182,7 +182,6 @@ Example:
 
 ### UI configuration
 
-No repository-managed `.env*` files were found for the UI.
 
 - **API base URL:** defaults to `http://localhost:4300`
 - **Theme / language / Teacher PDF path:** stored in the browser (local preferences)
