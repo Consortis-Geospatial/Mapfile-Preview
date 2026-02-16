@@ -147,6 +147,10 @@ export class HandleNewFileService {
    * NOTE: Backend expects `allias` (typo) based on current AppComponent implementation.
    */
   private async openByPath(path: string, alias?: string): Promise<any> {
+    try {
+      await (this.mapfile as any)?.ensureConfigLoaded?.();
+    } catch { }
+
     const base = this.getApiBase();
     const url = `${base}/open`;
 
@@ -165,7 +169,19 @@ export class HandleNewFileService {
    */
   private getApiBase(): string {
     const m: any = this.mapfile as any;
-    const base = m?.apiBase || m?.baseUrl || m?.apiUrl || 'http://localhost:4300/api';
+
+    // Prefer whatever MapfileService resolved (it now reads apiURL from config.json).
+    let base = m?.apiBase || m?.baseUrl || m?.apiUrl;
+
+    // Fallback: global apiURL (host only) -> /api
+    if (!base) {
+      const g = (globalThis as any)?.__APP_API_URL;
+      if (typeof g === 'string' && g.trim()) {
+        base = `${String(g).trim().replace(/\/+$/, '')}/api`;
+      }
+    }
+
+    base = base || 'http://localhost:4300/api';
     return String(base).replace(/\/$/, '');
   }
 }

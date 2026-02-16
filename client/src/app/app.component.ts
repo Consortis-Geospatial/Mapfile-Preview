@@ -27,6 +27,8 @@ type AppConfig = {
   language: 'el' | 'en';
   theme: 'light' | 'dark';
   use_AI: boolean;
+  /** Base URL of the backend (e.g. http://localhost:4300). */
+  apiURL?: string;
 };
 
 @Component({
@@ -72,6 +74,44 @@ export class AppComponent implements AfterViewInit {
     return v === 'dark' ? 'dark' : 'light';
   }
 
+  private coerceApiUrl(v: any): string | null {
+    const s = typeof v === 'string' ? v.trim() : '';
+    if (!s) return null;
+    return s.replace(/\/$/, '');
+  }
+
+  private getApiOrigin(): string {
+    const v = this.coerceApiUrl((this.appConfig as any)?.apiURL);
+    return v ?? 'http://localhost:4300';
+  }
+
+  private getApiBase(): string {
+    return `${this.getApiOrigin()}/api`;
+  }
+
+  private async bootstrapRuntimeApiConfig(): Promise<void> {
+    await this.ensureConfigLoaded();
+    const origin = this.getApiOrigin();
+
+    // Expose to other components (best-effort)
+    try {
+      if (typeof window !== 'undefined') (window as any).__APP_API_URL = origin;
+    } catch { }
+
+    const apiBase = this.getApiBase();
+    try {
+      // Best-effort: some services expect one of these
+      (this.mapfileService as any).apiBase = apiBase;
+      (this.mapfileService as any).baseUrl = apiBase;
+      (this.mapfileService as any).apiUrl = apiBase;
+      (this.handleNewFileSvc as any).apiBase = apiBase;
+      (this.handleNewFileSvc as any).baseUrl = apiBase;
+      (this.handleNewFileSvc as any).apiUrl = apiBase;
+      // Teacher dialog uses origin (not /api)
+      (this.mpTeacherDialog as any).apiBase = origin;
+    } catch { }
+  }
+
   private async loadAppConfig(): Promise<AppConfig | null> {
     try {
       const r = await fetch('assets/config/config.json', { cache: 'no-store' });
@@ -82,7 +122,8 @@ export class AppComponent implements AfterViewInit {
       return {
         language: this.coerceLang((raw as any).language),
         theme: this.coerceTheme((raw as any).theme),
-        use_AI: !!(raw as any).use_AI
+        use_AI: !!(raw as any).use_AI,
+        apiURL: this.coerceApiUrl((raw as any).apiURL) ?? undefined
       };
     } catch {
       return null;
@@ -139,6 +180,7 @@ export class AppComponent implements AfterViewInit {
 
   constructor(private mapfileService: MapfileService, private handleNewFileSvc: HandleNewFileService, private extentSync: ExtentSyncService) {
     void this.bootstrapUiFromConfigAndStorage();
+    void this.bootstrapRuntimeApiConfig();
 
     this.bo.observe([Breakpoints.Medium, Breakpoints.Small, Breakpoints.Handset])
       .subscribe(state => {
@@ -481,7 +523,7 @@ ${divider}
         (this.mapfileService as any).apiBase ||
         (this.mapfileService as any).baseUrl ||
         (this.mapfileService as any).apiUrl ||
-        'http://localhost:4300/api';
+        this.getApiBase();
 
       const base = String(apiBase).replace(/\/$/, '');
       const url = `${base}/newQuickCostume`;
@@ -553,7 +595,7 @@ ${divider}
         (this.mapfileService as any).apiBase ||
         (this.mapfileService as any).baseUrl ||
         (this.mapfileService as any).apiUrl ||
-        'http://localhost:4300/api';
+        this.getApiBase();
 
       const url = `${String(apiBase).replace(/\/$/, '')}/open`;
 
@@ -666,7 +708,7 @@ ${divider}
       (this.mapfileService as any).apiBase ||
       (this.mapfileService as any).baseUrl ||
       (this.mapfileService as any).apiUrl ||
-      'http://localhost:4300/api';
+      this.getApiBase();
 
     const url = `${String(apiBase).replace(/\/$/, '')}/saveSample`;
 
@@ -745,7 +787,7 @@ ${divider}
         (this.mapfileService as any).apiBase ||
         (this.mapfileService as any).baseUrl ||
         (this.mapfileService as any).apiUrl ||
-        'http://localhost:4300/api';
+        this.getApiBase();
 
       const url = `${String(apiBase).replace(/\/$/, '')}/save_as`;
 

@@ -21,6 +21,7 @@ export class MapPaneComponent implements AfterViewInit, OnDestroy {
   private map!: import('leaflet').Map;
   private osm!: import('leaflet').TileLayer;
   private wmsBaseUrl = 'http://localhost:4300/api/wms';
+  private apiOrigin = 'http://localhost:4300';
 
   /** Mapfile overlays currently on the map */
   private overlayLayers = new Map<string, import('leaflet').TileLayer.WMS>();
@@ -73,8 +74,47 @@ export class MapPaneComponent implements AfterViewInit, OnDestroy {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
+  private getGlobalApiOrigin(): string | null {
+    try {
+      if (typeof window === 'undefined') return null;
+      const w: any = window as any;
+      const v = w.__APP_API_URL || w.__API_URL;
+      const s = typeof v === 'string' ? v.trim() : '';
+      return s ? s.replace(/\/$/, '') : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private async initApiOrigin(): Promise<void> {
+    const g = this.getGlobalApiOrigin();
+    if (g) {
+      this.apiOrigin = g;
+    } else {
+      try {
+        const r = await fetch('assets/config/config.json', { cache: 'no-store' });
+        if (r.ok) {
+          const raw = await r.json().catch(() => null);
+          const s = typeof raw?.apiURL === 'string' ? String(raw.apiURL).trim() : '';
+          if (s) this.apiOrigin = s.replace(/\/$/, '');
+        }
+      } catch { }
+    }
+
+    this.wmsBaseUrl = `${this.apiOrigin}/api/wms`;
+
+    try {
+      const apiBase = `${this.apiOrigin}/api`;
+      (this.mapfileService as any).apiBase = apiBase;
+      (this.mapfileService as any).baseUrl = apiBase;
+      (this.mapfileService as any).apiUrl = apiBase;
+    } catch { }
+  }
+
   async ngAfterViewInit(): Promise<void> {
     if (!this.isBrowser) return;
+
+    await this.initApiOrigin();
 
     this.L = await import('leaflet');
 

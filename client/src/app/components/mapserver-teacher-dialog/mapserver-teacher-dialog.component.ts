@@ -42,8 +42,40 @@ export class MapserverTeacherDialogComponent implements OnInit, OnDestroy {
 
   @ViewChild('scrollEl') private scrollEl?: ElementRef<HTMLDivElement>;
 
+  private getGlobalApiBase(): string | null {
+    try {
+      if (typeof window === 'undefined') return null;
+      const w: any = window as any;
+      const v = w.__APP_API_URL || w.__API_URL;
+      const s = typeof v === 'string' ? v.trim() : '';
+      return s ? s.replace(/\/$/, '') : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private async applyConfigApiBaseIfNoLocalOverride(): Promise<void> {
+    try {
+      if (typeof window === 'undefined') return;
+      if (localStorage.getItem('mpTeacher.apiBase')) return;
+
+      const g = this.getGlobalApiBase();
+      if (g) {
+        this.apiBase = g;
+        return;
+      }
+
+      const r = await fetch('assets/config/config.json', { cache: 'no-store' });
+      if (!r.ok) return;
+      const raw = await r.json().catch(() => null);
+      const s = typeof raw?.apiURL === 'string' ? String(raw.apiURL).trim() : '';
+      if (s) this.apiBase = s.replace(/\/$/, '');
+    } catch { }
+  }
+
+
   /** Gemini API host (per your note: localhost:4300). */
-  apiBase = this.loadLocal('mpTeacher.apiBase', 'http://localhost:4300');
+  apiBase = this.loadLocal('mpTeacher.apiBase', this.getGlobalApiBase() || 'http://localhost:4300');
 
   /** Full path to MapServer.pdf (server-side path). */
   pdfPath = this.loadLocal('mpTeacher.pdfPath', 'C:/Consortis_Projects/MapHelper.pdf');
@@ -56,6 +88,7 @@ export class MapserverTeacherDialogComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
 
   ngOnInit(): void {
+    void this.applyConfigApiBaseIfNoLocalOverride();
     // Use async translation lookup so the intro message is correct even if the dialog component
     // is instantiated before the i18n files have finished loading.
     this.setIntroMessage();
@@ -137,7 +170,7 @@ export class MapserverTeacherDialogComponent implements OnInit, OnDestroy {
   }
 
   saveApiBase() {
-    const v = (this.apiBase || '').trim() || 'http://localhost:4300';
+    const v = (this.apiBase || '').trim() || (this.getGlobalApiBase() || 'http://localhost:4300');
     this.apiBase = v;
     this.saveLocal('mpTeacher.apiBase', v);
   }
@@ -246,11 +279,11 @@ export class MapserverTeacherDialogComponent implements OnInit, OnDestroy {
   }
 
   private get askUrl() {
-    return this.joinUrl(this.apiBase || 'http://localhost:4300', '/api/mpTeacher/mapserverTeacher/ask');
+    return this.joinUrl(this.apiBase || (this.getGlobalApiBase() || 'http://localhost:4300'), '/api/mpTeacher/mapserverTeacher/ask');
   }
 
   private get pdfUrl() {
-    return this.joinUrl(this.apiBase || 'http://localhost:4300', '/api/mpTeacher/mapserverTeacher/pdf');
+    return this.joinUrl(this.apiBase || (this.getGlobalApiBase() || 'http://localhost:4300'), '/api/mpTeacher/mapserverTeacher/pdf');
   }
 
   private joinUrl(base: string, path: string) {

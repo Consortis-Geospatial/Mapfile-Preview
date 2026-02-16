@@ -122,15 +122,53 @@ export interface MapfilePathsResponse {
 
 @Injectable({ providedIn: 'root' })
 export class MapfileService {
-  // adjust if backend uses a different port
+  // Default fallback (can be overridden by assets/config/config.json -> apiURL)
   private API = 'http://localhost:4300/api';
+
+  private cfgInit: Promise<void>;
 
   /** Expose current API base (useful for components that want to build URLs). */
   get apiBase() {
     return this.API;
   }
 
-  constructor(private http: HttpClient) { }
+  /**
+   * Allow the app to set apiURL explicitly (host only, without /api).
+   * Also publishes it to globalThis so other components can pick it up.
+   */
+  setApiURL(apiURL: string) {
+    const base = String(apiURL || '').trim().replace(/\/+$/, '');
+    if (!base) return;
+    this.API = `${base}/api`;
+    (globalThis as any).__APP_API_URL = base;
+  }
+
+  constructor(private http: HttpClient) {
+    // Fast path: if AppComponent already set it, use it immediately.
+    const g = (globalThis as any)?.__APP_API_URL;
+    if (typeof g === 'string' && g.trim()) {
+      this.setApiURL(g);
+    }
+
+    // Best-effort: read from assets/config/config.json (fallback stays localhost:4300).
+    this.cfgInit = this.loadApiURLFromConfig();
+  }
+
+  async ensureConfigLoaded(): Promise<void> {
+    try {
+      await this.cfgInit;
+    } catch { }
+  }
+
+  private async loadApiURLFromConfig(): Promise<void> {
+    try {
+      const cfg: any = await firstValueFrom(this.http.get<any>('assets/config/config.json'));
+      const apiURL = cfg?.apiURL;
+      if (typeof apiURL === 'string' && apiURL.trim()) {
+        this.setApiURL(apiURL);
+      }
+    } catch { }
+  }
 
   async load() {
     console.debug('[MapfileService] GET /load');

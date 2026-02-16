@@ -1,5 +1,6 @@
 {
     "language": "el",
     "theme": "light",
-    "use_AI": true
+    "use_AI": true,
+    "apiURL": "http://localhost:4300"
 }
