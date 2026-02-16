@@ -210,27 +210,73 @@ Example:
 
 If you run the API on a different host/port, make sure the UI is configured (or deployed behind a proxy) to reach the API correctly.
 
-## 7. Running the App (Dev / Prod)
+### 7. Running the App (Dev / Prod)
 
-### Development (two terminals)
+## Development (two terminals)
 
-API:
+You will run the project in **two separate terminal windows**:
+- **API (server)** runs in one terminal
+- **UI (client)** runs in another terminal
+
+> Tip: Keep both terminals open while you use the app.
+
+---
+
+## 1) Open Terminal #1 (API)
+- **Windows:** Open **Command Prompt** as **Administrator**.
+
+Go to the **project root folder** (the folder that contains `client` and `server`):
+1. Type `cd ` (with a space)
+2. Drag & drop the project folder into the terminal (it pastes the full path)
+3. Press **Enter**
+
+Start the API:
 
 ```bash
 cd server
 npm start
 ```
 
-UI:
+What to expect:
+- The terminal will stay “busy” and show logs. That’s normal.
+- Leave this window open.
+
+---
+
+## 2) Open Terminal #2 (UI)
+- **Windows:** Open a **second** Command Prompt as **Administrator**.
+
+Again, go to the **same project root folder** (the one that contains `client` and `server`).
+
+Start the UI:
 
 ```bash
 cd client
 npm start
 ```
 
+What to expect:
+- The UI will start and the terminal will keep running.
+- Leave this window open too.
+
+---
+
+## 3) Open the app in your browser
+
 Default URLs:
 - UI: `http://localhost:4200`
 - API: `http://localhost:4300`
+
+Usually you only need to open the **UI** link. The UI will talk to the API in the background.
+
+---
+
+## 4) How to stop the app
+In **each** terminal window, press:
+
+- `Ctrl + C`
+
+(Windows may ask for confirmation — if it does, type `Y` and press Enter.)
 
 ### Production
 
