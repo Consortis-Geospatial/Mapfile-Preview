@@ -26,6 +26,7 @@ Opens an existing `.map` file from the workspace by letting you assign (or re-us
 
 **New / Quick New mapfile.**  
 Creates a new mapfile for you using a guided form. “New” lets you fill in more options (projection/EPSG, map size, extent, optional paths, and service metadata), while “Quick New” creates a fast starter mapfile with minimal inputs so you can begin editing immediately.
+<img width="900" height="446" alt="image" src="https://github.com/user-attachments/assets/faf4734b-6d50-49ae-a0fa-3cdf72c02900" />
 
 **Save / Save As.**  
 Saves your current changes back to the workspace. “Save As” helps you store the mapfile under a new file name and optionally in a chosen folder inside the workspace, with an option to overwrite if a file already exists.
@@ -44,9 +45,6 @@ Lets you test WMS output quickly: view maps, legends, and capabilities. The prev
 
 **WFS Preview (Layer Picker).**  
 Helps you test WFS layers by listing the available layers and letting you choose one to preview. This is useful when a service exposes many layers—pick a single layer and view its features on the map to confirm geometry and attributes look correct.
-
-**CGI Smoke Test.**  
-Performs a basic check against the MapServer CGI endpoint to confirm it is reachable and responding. This is useful when previews fail and you want to quickly distinguish “MapServer is down/unreachable” from “mapfile/config issue”.
 
 **Mapfile Teacher (Gemini).**  
 A “chat-like” helper where you ask MapServer/mapfile questions and get answers grounded in a PDF reference. For best results, download **MapServer.pdf** from the official MapServer documentation page and point the Teacher to the local file path. The Teacher requires **your own personal Gemini API key** (see Configuration).
