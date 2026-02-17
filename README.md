@@ -11,11 +11,10 @@
 - Save / Save As to manage mapfiles and aliases in the workspace
 - Format (pretty-print) mapfiles for readability
 - Validate mapfiles with MapServer and show errors/warnings
-- Auto Metadata helper (adds common OGC metadata for WMS/WFS/WCS)
+- Auto Metadata helper (adds common OGC metadata for WMS/WFS)
 - Preview:
   - **WMS** (GetMap / GetLegendGraphic / Capabilities)
   - **WFS** (choose a layer and preview features on the map)
-  - **CGI** smoke test
 - **Mapfile Teacher (Gemini)**: ask questions and get answers grounded in the MapServer PDF (requires your own Gemini API key)
 
 ### Feature details (what each one does)
@@ -227,7 +226,7 @@ Example `config.json`:
 
 If you run the API on a different host/port, update `apiURL` (or deploy the UI behind a proxy) so the UI can reach the API correctly.
 
-## 7. Running the App (Dev / Prod)
+## 7. Running the App (Dev)
 
 ### Development (two terminals)
 
@@ -284,7 +283,7 @@ Default URLs:
 - UI: `http://localhost:4200`
 - API: `http://localhost:4300`
 
-Usually you only need to open the **UI** link. The UI will talk to the API in the background.
+You only need to open the **UI** link. The UI will talk to the API in the background.
 
 ---
 
@@ -295,51 +294,7 @@ In **each** terminal window, press:
 
 (Windows may ask for confirmation — if it does, type `Y` and press Enter.)
 
-### Production
-
-#### API
-
-```bash
-cd server
-npm start
-```
-
-#### UI (static build)
-
-```bash
-cd client
-npm run build
-```
-
-Build output:
-- `client/dist/client/browser`
-
-Serve the UI build with any static web server (Nginx/IIS/etc.).
-
-#### UI (SSR build, optional)
-
-```bash
-cd client
-npm run build
-PORT=4000 npm run serve:ssr:client
-```
-
-## 8. Scripts
-
-### UI (`client/package.json`)
-
-- `npm start` — run the UI in development
-- `npm run build` — build for production
-- `npm run watch` — build in watch mode (development configuration)
-- `npm test` — run UI tests
-- `npm run serve:ssr:client` — run the built SSR server
-
-### API (`server/package.json`)
-
-- `npm run dev` — start the API
-- `npm start` — start the API
-
-## 9. Project Structure
+## 8. Project Structure
 
 ```text
 .
