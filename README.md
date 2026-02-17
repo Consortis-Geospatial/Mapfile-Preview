@@ -26,6 +26,7 @@ Opens an existing `.map` file from the workspace by letting you assign (or re-us
 
 **New / Quick New mapfile.**  
 Creates a new mapfile for you using a guided form. “New” lets you fill in more options (projection/EPSG, map size, extent, optional paths, and service metadata), while “Quick New” creates a fast starter mapfile with minimal inputs so you can begin editing immediately.
+
 <img width="900" height="446" alt="image" src="https://github.com/user-attachments/assets/faf4734b-6d50-49ae-a0fa-3cdf72c02900" />
 
 **Save / Save As.**  
