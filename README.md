@@ -89,7 +89,7 @@ cd Mapfile-Preview
 ```
 The ZIP file can be found at https://github.com/Consortis-Geospatial/Mapfile-Preview/
  under the **Code** tab.
-<img width="750" height="517" alt="image" src="https://github.com/user-attachments/assets/5fe456a8-0bc0-41b2-a25b-1aec971a9239" />
+<img width="600" height="554" alt="image" src="https://github.com/user-attachments/assets/5fe456a8-0bc0-41b2-a25b-1aec971a9239" />
 
 Alternatively, you can use the releases listed in the Releases section on the right side of the GitHub page.
 <img width="750" height="430" alt="image" src="https://github.com/user-attachments/assets/db0f16ce-f7a3-490f-b81a-be0a3bf29e5f" />
