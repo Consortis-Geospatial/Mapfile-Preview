@@ -37,6 +37,7 @@ Reformats the mapfile text so it is easier to read and review (consistent indent
 
 **Validate mapfile.**  
 Runs MapServer’s validation on the mapfile and returns any errors or warnings. This is the quickest way to confirm whether the mapfile can be parsed and whether common configuration problems exist before you try to publish services.
+<img width="900" height="446" alt="image" src="https://github.com/user-attachments/assets/5fda1ba6-bc89-4fd3-a2a2-1a2869daad9c" />
 
 **Auto Metadata.**  
 Helps you add (or generate) common OGC-related metadata blocks for `WEB/METADATA` or `LAYER/METADATA`. You can choose which capabilities to include (OWS/WMS/WFS/WCS), and the tool prepares a ready-to-insert metadata snippet so you don’t have to write it from scratch.
