@@ -55,6 +55,7 @@ MapServer documentation page (download **MapServer.pdf** there):
 ```text
 https://mapserver.org/documentation.html
 ```
+<img width="900" height="447" alt="image" src="https://github.com/user-attachments/assets/8710c587-9762-40b1-afa7-0d659f83357a" />
 
 ## 3. Architecture (High-level)
 
