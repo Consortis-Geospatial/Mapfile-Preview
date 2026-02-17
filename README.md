@@ -68,14 +68,14 @@ https://mapserver.org/documentation.html
 
 ## 4. Prerequisites
 
-- **Node.js:** recommend **Node 20+**
+- **Node.js:** recommend **Node 20+** (https://nodejs.org/en/blog/release/v20.20.0)
 - **Package manager:** **npm** (package-lock files present)
 - **External services / software:**
   - **MapServer 8+** (required)
     - Local `mapserv` binary path (for validation)
     - HTTP base URL for MapServer CGI (for preview)
   - **Mapfile Teacher (optional):**
-    - A **personal Gemini API key** (required to use Teacher)
+    - A **personal Gemini API key** (required to use Teacher - (https://ai.google.dev/gemini-api/docs/api-key))
 
 ## 5. Installation
 
