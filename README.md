@@ -114,7 +114,7 @@ These steps download all required packages for the project.
 - **Windows:** Open **Command Prompt** as **Administrator**.
 - Go to the folder where you **unzipped** the project:
   1. In the Command Prompt, type `cd ` (with a space at the end)
-  2. Drag & drop the unzipped project folder into the Command Prompt window (it will paste the full path)
+  2. Copy and paste the folder path into the Command Prompt window
   3. Press **Enter**
 
 ### Install dependencies (UI + API)
