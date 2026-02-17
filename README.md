@@ -112,6 +112,9 @@ These steps download all required packages for the project.
 
 ### Before you start
 - **Windows:** Open **Command Prompt** as **Administrator**.
+  1. Click Start (or press the Windows key)
+  2. Type cmd or Command Prompt
+  3. Right-click Command Prompt → Run as administrator
 - Go to the folder where you **unzipped** the project:
   1. In the Command Prompt, type `cd ` (with a space at the end)
   2. Copy and paste the folder path into the Command Prompt window
@@ -125,6 +128,7 @@ UI:
 cd client
 npm ci
 ```
+<img width="431" height="119" alt="image" src="https://github.com/user-attachments/assets/e514aa8f-efcc-435a-9c83-0368f0186fe2" />
 
 API:
 
@@ -132,6 +136,7 @@ API:
 cd ../server
 npm ci
 ```
+<img width="395" height="93" alt="image" src="https://github.com/user-attachments/assets/88f826c8-4f3a-4383-90e0-9df52231b745" />
 
 > If `npm ci` fails (e.g., lockfile mismatch), use `npm install`.
 
