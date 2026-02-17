@@ -147,10 +147,8 @@ Most day-to-day usage is done through the app’s **Settings** (where available)
 ### How configuration is loaded (API)
 
 Configuration is applied in this order (highest priority first):
-
 1. `server/src/config.local.json` (if present)
-2. Environment variables
-3. Built-in defaults
+
 
 ### API settings (recommended values)
 
