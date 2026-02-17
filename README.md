@@ -4,7 +4,7 @@
 
 **MapFile Preview** is a browser-based tool that helps you **edit MapServer mapfiles** and **immediately preview what they publish** (WMS/WFS). It includes a UI for editing text and viewing the map, and an API service that reads/writes mapfiles from a workspace folder, validates them with MapServer, and forwards preview requests to your MapServer installation.
 
-<img width="1000" height="247" alt="image" src="https://github.com/user-attachments/assets/77858fc7-4824-45c0-8a86-974b9e216456" />
+<img width="1000" height="246" alt="image" src="https://github.com/user-attachments/assets/d0803ac2-e27a-47f5-91d1-36d6ebde7975" />
 
 ## 2. Features
 
