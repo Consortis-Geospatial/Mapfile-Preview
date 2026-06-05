@@ -83,9 +83,46 @@ https://mapserver.org/documentation.html
 
 ## 5. Installation
 
-### Get the project files (ZIP or Git)
+> **Installation at a glance** — do these steps in order:
+> 1. **Install MapServer** (required for validation & preview) — see *Step 1* below.
+> 2. **Install Node.js 20+** (this also installs **npm**); for the Git option also install **Git** — see [Prerequisites](#4-prerequisites).
+> 3. **Get the project files** (ZIP or Git) — *Step 2*.
+> 4. **Install dependencies** (UI + API) — *Step 3*.
+>
+> When done, continue to **6. Configuration** and **7. Running the App (Dev)**.
+
+### Step 1 — Install MapServer (required)
+
+The app needs MapServer for two separate things:
+- a **local `mapserv` binary** (e.g. `mapserv.exe`) used for **validation** → later set as `MAPSERV_PATH`
+- a **MapServer CGI endpoint over HTTP** (served by a web server) used for **WMS/WFS preview** → later set as `MAPSERV_URL`
+
+On Windows the easiest option is **MS4W**, because one installer provides **both** the `mapserv.exe` binary **and** a ready web server with a CGI endpoint (no manual IIS/Apache setup needed).
+
+**Option A — MS4W (recommended for Windows)**
+- Home / docs: https://ms4w.com/
+- Download page: https://ms4w.com/download.html
+- Direct installer (.exe): https://ms4w.com/release/ms4w-5.2.0-setup.exe
+- Install guide (README): https://ms4w.com/README_INSTALL.html
+
+> After installing MS4W, the binary is typically at `C:\ms4w\Apache\cgi-bin\mapserv.exe` and the CGI endpoint at `http://localhost/cgi-bin/mapserv.exe`. Use **your actual path/URL** in *6. Configuration* (`MAPSERV_PATH` / `MAPSERV_URL`) — they may differ from the example defaults.
+
+**Option B — OSGeo4W** (select the **mapserver** package during setup)
+- Project page: https://www.osgeo.org/projects/osgeo4w/
+- Network installer: https://download.osgeo.org/osgeo4w/v2/osgeo4w-setup.exe
+
+**Official MapServer pages**
+- Download: https://mapserver.org/download.html
+- Installation docs: https://mapserver.org/installation/index.html
+
+> Need **MapServer.pdf** for the optional *Mapfile Teacher*? Direct download: https://download.osgeo.org/mapserver/docs/MapServer.pdf
+
+### Step 2 — Get the project files (ZIP or Git)
 
 **Option A — ZIP**
+
+> **Windows users:** the `unzip` command below is for macOS/Linux. On Windows, **right-click the downloaded `.zip` → Extract All…**, then open the extracted folder.
+
 ```bash
 unzip Mapfile-Preview.zip
 cd Mapfile-Preview
@@ -102,28 +139,30 @@ Once you click Releases, it will open and you can choose the version you want. F
 
 
 **Option B — Git (recommended)**
-Clone the repository to get the latest code (requires **Git** installed), then enter the project folder:
+Clone the repository to get the latest code (requires **Git** installed — download it from https://git-scm.com/download/win), then enter the project folder:
 
 ```bash
 git clone https://github.com/Consortis-Geospatial/Mapfile-Preview.git
 cd Mapfile-Preview
 ```
 
-## Install dependencies
+### Step 3 — Install dependencies
 
 These steps download all required packages for the project.
 
-### Before you start
+#### Before you start
 - **Windows:** Open **Command Prompt** as **Administrator**.
   1. Click Start (or press the Windows key)
   2. Type cmd or Command Prompt
   3. Right-click Command Prompt → Run as administrator
-- Go to the folder where you **unzipped** the project:
+- Go to the **project root folder** — the folder you **unzipped/cloned** that contains both `client` and `server`:
   1. In the Command Prompt, type `cd ` (with a space at the end)
   2. Copy and paste the folder path into the Command Prompt window
   3. Press **Enter**
 
-### Install dependencies (UI + API)
+> **Tip:** Run the UI and API commands below **in sequence, in the same terminal**, starting from the project root (the `cd ../server` step assumes you just ran the `cd client` step). Administrator rights are usually only needed if you hit a permission error.
+
+#### Install dependencies (UI + API)
 
 UI:
 
@@ -141,7 +180,7 @@ npm ci
 ```
 <img width="395" height="93" alt="image" src="https://github.com/user-attachments/assets/88f826c8-4f3a-4383-90e0-9df52231b745" />
 
-> If `npm ci` fails (e.g., lockfile mismatch), use `npm install`.
+> If `npm ci` fails (for example, you see a red **lockfile mismatch** error), run `npm install` instead.
 
 ## 6. Configuration
 
