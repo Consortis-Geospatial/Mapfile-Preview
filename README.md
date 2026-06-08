@@ -85,9 +85,9 @@ https://mapserver.org/documentation.html
 
 > **Installation at a glance** — do these steps in order:
 > 1. **Install MapServer** (required for validation & preview) — see *Step 1* below.
-> 2. **Install Node.js 20+** (this also installs **npm**); for the Git option also install **Git** — see [Prerequisites](#4-prerequisites).
+> 2. **Install Node.js 20+** (this also installs **npm**) — detailed in *Step 3 → Part A* below; for the Git option also install **Git** (see [Prerequisites](#4-prerequisites)).
 > 3. **Get the project files** (ZIP or Git) — *Step 2*.
-> 4. **Install dependencies** (UI + API) — *Step 3*.
+> 4. **Install dependencies** (UI + API) — *Step 3 → Part B*.
 >
 > When done, continue to **6. Configuration** and **7. Running the App (Dev)**.
 
@@ -146,25 +146,44 @@ git clone https://github.com/Consortis-Geospatial/Mapfile-Preview.git
 cd Mapfile-Preview
 ```
 
-### Step 3 — Install dependencies
+### Step 3 — Install Node.js, then install the project's dependencies
 
-These steps download all required packages for the project.
+This step has two parts:
+- **Part A:** install **Node.js** (the engine that runs the project) and confirm it works.
+- **Part B:** download the project's "building blocks" (the libraries it needs) for both the **UI** and the **API**.
 
-#### Before you start
-- **Windows:** Open **Command Prompt** as **Administrator**.
-  1. Click Start (or press the Windows key)
-  2. Type cmd or Command Prompt
-  3. Right-click Command Prompt → Run as administrator
-- Go to the **project root folder** — the folder you **unzipped/cloned** that contains both `client` and `server`:
-  1. In the Command Prompt, type `cd ` (with a space at the end)
-  2. Copy and paste the folder path into the Command Prompt window
-  3. Press **Enter**
+> **A few words in plain language (no jargon needed):**
+> - **Node.js** is the program that lets this project run on your computer. Installing it also installs **npm**, a helper that automatically downloads everything the project needs.
+> - The **`client`** folder is the **UI** — the screen you look at and click. It is built with a technology called **Angular**. You do **not** install Angular by hand; npm does it for you in Part B.
+> - The **`server`** folder is the **API** — the "engine" that works in the background (reading/saving mapfiles, talking to MapServer). It runs on **Node.js**.
+> - You will set up **both** folders, one after the other.
 
-> **Tip:** Run the UI and API commands below **in sequence, in the same terminal**, starting from the project root (the `cd ../server` step assumes you just ran the `cd client` step). Administrator rights are usually only needed if you hit a permission error.
+#### Part A — Install Node.js (this also installs npm)
 
-#### Install dependencies (UI + API)
+1. Open this page in your browser: https://nodejs.org/en/blog/release/v20.20.0 (or the Node.js home page https://nodejs.org/) and download the **Windows Installer (.msi)** for **version 20 or newer (the "LTS" version)**.
+2. Run the downloaded file and click **Next** through the installer, leaving every option at its default. (Leave the **"Add to PATH"** option checked — it is on by default. This is what lets you type `node` in any window.)
+3. When it finishes, click **Finish**. You do **not** need to restart the computer, but you **must** open a **new** Command Prompt window after installing (windows opened earlier won't know Node.js exists yet).
 
-UI:
+**Check that it worked.** Open a Command Prompt (Start → type `cmd` → press **Enter**) and type these two lines, pressing **Enter** after each:
+
+```bash
+node -v
+npm -v
+```
+
+You should see a version number after each one — for example `v20.20.0` and `10.8.2`. The exact numbers may differ; that's fine, as long as Node is **20 or higher**. If instead you see **"'node' is not recognized"**, close the window, open a **new** Command Prompt, and try again. If it still fails, re-run the Node.js installer.
+
+#### Part B — Download the project's dependencies (UI + API)
+
+**First, open a Command Prompt inside the project's root folder.** The "root folder" is the one you unzipped/cloned in Step 2 that contains **both** the `client` and `server` folders.
+
+1. Open a Command Prompt (Start → type `cmd` → press **Enter**). A normal (non-administrator) window is fine.
+2. Type `cd ` — that is the two letters `c`, `d`, followed by a **space**.
+3. Copy the full path of the project folder, paste it right after `cd `, and press **Enter**. (Tip: in File Explorer, click once on the address bar to reveal the full path, or simply **drag the project folder onto the Command Prompt window** to paste its path automatically.)
+
+> **Important — run the two commands below in this order, in the SAME window.** First the UI, then the API. The API command uses `cd ../server`, which only works if you are coming from the `client` folder.
+
+**1) UI (the Angular screen) — folder `client`:**
 
 ```bash
 cd client
@@ -172,7 +191,7 @@ npm ci
 ```
 <img width="431" height="119" alt="image" src="https://github.com/user-attachments/assets/e514aa8f-efcc-435a-9c83-0368f0186fe2" />
 
-API:
+**2) API (the Node engine) — folder `server`:**
 
 ```bash
 cd ../server
@@ -180,7 +199,16 @@ npm ci
 ```
 <img width="395" height="93" alt="image" src="https://github.com/user-attachments/assets/88f826c8-4f3a-4383-90e0-9df52231b745" />
 
-> If `npm ci` fails (for example, you see a red **lockfile mismatch** error), run `npm install` instead.
+**What to expect while `npm ci` runs:**
+- `npm ci` reads the project's list of required libraries and downloads them into a new folder called `node_modules`. (`ci` stands for "clean install".)
+- It can take **several minutes** for each folder, especially the UI. You'll see many lines of text scrolling by — that's completely normal.
+- It's **finished** when the scrolling **stops** and you get the prompt back (a line ending in `>` waiting for you to type). A short summary such as `added 1234 packages` means it worked. You can ignore yellow `npm warn` lines; only **red `npm error`** lines indicate a real problem.
+
+> **Troubleshooting `npm ci`:**
+> - **Red "lockfile" / "package-lock.json" mismatch error:** run this instead, in the same folder: `npm install`
+> - **Permissions error** (e.g. `EPERM`, "access is denied"): close the window, reopen Command Prompt **as Administrator** (Start → type `cmd` → right-click **Command Prompt** → **Run as administrator**), go back to the project folder, and run the command again.
+> - **"'npm' is not recognized":** Node.js isn't installed, or you opened the window before installing it — do **Part A** first, then open a **new** window.
+> - **It hangs or fails to download:** `npm ci` needs the internet. Make sure you're online and try again.
 
 ## 6. Configuration
 
@@ -271,71 +299,86 @@ If you run the API on a different host/port, update `apiURL` (or deploy the UI b
 
 ## 7. Running the App (Dev)
 
-### Development (two terminals)
+You run the app every time you want to use it. It has **two parts that must both be running at the same time**, each in its **own** terminal window:
+- **Terminal #1 → API** (the `server`, runs on **Node.js**) — the background engine.
+- **Terminal #2 → UI** (the `client`, the **Angular** screen) — what you actually look at.
 
-You will run the project in **two separate terminal windows**:
-- **API (server)** runs in one terminal
-- **UI (client)** runs in another terminal
+> **Why two windows?** Each part keeps running and "listens" for work, so it takes over its window and can't share it with the other. **Keep both windows open the whole time you use the app** — closing a window stops that part.
 
-> Tip: Keep both terminals open while you use the app.
+> **Order matters: start the API first, then the UI.** The UI needs the API to be ready to answer it.
 
 ---
 
-#### 1) Open Terminal #1 (API)
-- **Windows:** Open **Command Prompt** as **Administrator**.
+#### 1) Terminal #1 — start the API (server / Node)
 
-Go to the **project root folder** (the folder that contains `client` and `server`):
-1. Type `cd ` (with a space)
-2. Drag & drop the project folder into the terminal (it pastes the full path)
-3. Press **Enter**
-
-Start the API:
+1. Open a Command Prompt (Start → type `cmd` → press **Enter**). A normal window is fine.
+2. Go to the **project root folder** (the one that contains `client` and `server`): type `cd `, a **space**, then paste the folder path (or **drag the folder onto the window**) and press **Enter**.
+3. Type these two lines, pressing **Enter** after each:
 
 ```bash
 cd server
 npm start
 ```
 
-What to expect:
-- The terminal will stay “busy” and show logs. That’s normal.
-- Leave this window open.
+**What to expect:**
+- After a moment you'll see a confirmation line, typically: **`Server on http://localhost:4300`**.
+- The window then **stays open and looks "busy"** — it does **not** return to a normal prompt. **That is correct; it means the API is running. Leave this window open.**
+- If it instead printed an error and gave you the prompt back, see **Troubleshooting** below.
 
 ---
 
-#### 2) Open Terminal #2 (UI)
-- **Windows:** Open a **second** Command Prompt as **Administrator**.
+#### 2) Terminal #2 — start the UI (client / Angular)
 
-Again, go to the **same project root folder** (the one that contains `client` and `server`).
-
-Start the UI:
+1. Open a **second, separate** Command Prompt window. (Don't reuse the first one — that window is busy running the API.)
+2. Go to the **same project root folder** again (type `cd `, a space, paste the path, press **Enter**).
+3. Type these two lines, pressing **Enter** after each:
 
 ```bash
 cd client
 npm start
 ```
 
-What to expect:
-- The UI will start and the terminal will keep running.
-- Leave this window open too.
+**What to expect:**
+- The UI is built with Angular, so the **first start takes a while** (often **30 seconds to a couple of minutes**) while it compiles. This is normal — please be patient and let it finish.
+- When it's ready you'll see a green message similar to **"Application bundle generation complete"**, followed by a line like:
+  - **`➜  Local:   http://localhost:4200/`**
+- Like the API window, this window **stays open and busy**. **Leave it open too.**
 
 ---
 
 #### 3) Open the app in your browser
 
-Default URLs:
-- UI: `http://localhost:4200`
-- API: `http://localhost:4300`
+Once Terminal #2 shows it's ready, open your web browser (Chrome, Edge, Firefox, …) and go to:
 
-You only need to open the **UI** link. The UI will talk to the API in the background.
+```text
+http://localhost:4200
+```
+
+- **You only open the UI address (`4200`).** The UI talks to the API (`4300`) automatically in the background — you don't open `4300` yourself.
+- If the page doesn't load on the very first try, wait a few seconds (the UI may still be finishing its compile) and then **refresh** the page.
 
 ---
 
 #### 4) How to stop the app
-In **each** terminal window, press:
 
-- `Ctrl + C`
+When you're finished using the app:
+1. Click on **Terminal #1**, then press **`Ctrl + C`** on the keyboard. If Windows asks **"Terminate batch job (Y/N)?"**, type **`Y`** and press **Enter**.
+2. Do exactly the same in **Terminal #2**.
+3. You can now close both windows.
 
-(Windows may ask for confirmation — if it does, type `Y` and press Enter.)
+> To use the app again another day, you do **not** need to reinstall anything from Section 5 — just repeat the steps in this section (start the API, then the UI, then open `http://localhost:4200`).
+
+---
+
+#### Troubleshooting (running the app)
+
+| What you see | What it means | What to do |
+|---|---|---|
+| `'npm' is not recognized` | Node.js isn't installed, or the window was opened before installing it | Install Node.js (Section 5, Step 3 → **Part A**), then open a **new** Command Prompt and try again |
+| `Missing script: "start"` or `Cannot find module …` | You're in the wrong folder, or dependencies weren't installed | Make sure you typed `cd server` / `cd client` first, and that you ran `npm ci` in Step 3 |
+| A message that **port 4300** (API) or **port 4200** (UI) is **already in use** | The app — or another program — is already using that port | Close any old terminal windows that may still be running the app, then start again. If Angular offers to use a different port, you can accept it |
+| Browser shows an error or "cannot reach the API" | The API (Terminal #1) isn't running, or you started the UI first | Make sure Terminal #1 is still open and shows `Server on http://localhost:4300`, then **refresh** the browser |
+| A window seems "frozen" with logs and won't accept typing | This is **normal** — it's the running app, not a freeze | Don't type in that window; use the **other** window for commands. Press `Ctrl + C` there only when you want to **stop** that part |
 
 ## 8. Project Structure
 
