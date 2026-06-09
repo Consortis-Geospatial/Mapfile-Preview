@@ -1,0 +1,185 @@
+MAP
+  NAME "EXAMPLE"
+  STATUS ON
+  SIZE 800 600
+  UNITS DD
+  EXTENT 22.943850 40.618106 22.963398 40.632503
+  IMAGETYPE "png24"
+
+  PROJECTION
+    "EPSG:4326"
+  END # PROJECTION
+
+  OUTPUTFORMAT
+    NAME "png24"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGBA
+    TRANSPARENT TRUE
+  END # OUTPUTFORMAT
+
+  # A simple built-in symbol so the point layer renders without external data.
+  SYMBOL
+    NAME "circle"
+    TYPE ELLIPSE
+    POINTS 1 1 END
+    FILLED TRUE
+  END # SYMBOL
+
+  WEB
+    METADATA
+      "wms_title"                  "Mapfile Preview - Example"
+      "ows_title"                  "Mapfile Preview - Example"
+      "wms_onlineresource"         "http://127.0.0.1/cgi-bin/mapserv?map=/data/maps/example.map"
+      "wms_srs"                    "EPSG:4326 EPSG:3857"
+      "wms_enable_request"         "*"
+      "ows_enable_request"         "*"
+      "wms_feature_info_mime_type" "text/html"
+    END # METADATA
+  END # WEB
+
+  # ---------------------------------------------------------------------------
+  # Three demo layers, all with INLINE geometry (no external data files needed).
+  # They show the three basic geometry types so the preview clearly renders
+  # something on the map: a filled POLYGON, a LINE and POINTs.
+  # ---------------------------------------------------------------------------
+
+  # 1) A semi-transparent polygon — a rough outline of the Peloponnese.
+  LAYER
+    NAME "demo_region"
+    TYPE POLYGON
+    STATUS ON
+    PROJECTION
+      "EPSG:4326"
+    END # PROJECTION
+    EXTENT 22.943850 40.618106 22.963398 40.632503
+    # Make the fill semi-transparent so the basemap stays visible underneath.
+    COMPOSITE
+      OPACITY 45
+    END # COMPOSITE
+    FEATURE
+      POINTS
+        22.947928 40.625072
+        22.949182 40.626339
+        22.952799 40.626222
+        22.952935 40.623976
+        22.953314 40.622504
+        22.951473 40.621360
+        22.948695 40.622798
+
+      END
+    END # FEATURE
+    CLASS
+      NAME "Demo region"
+      STYLE
+        COLOR 120 175 120
+        OUTLINECOLOR 40 90 40
+        WIDTH 1.5
+      END # STYLE
+    END # CLASS
+    METADATA
+      "wms_title"         "demo_region"
+      "ows_title"         "demo_region"
+      "gml_include_items" "all"
+    END # METADATA
+  END # LAYER
+
+  # 2) A line — the main motorway axis (PATHE): Thessaloniki -> Athens -> Patra.
+  LAYER
+    NAME "demo_route"
+    TYPE LINE
+    STATUS ON
+    PROJECTION
+      "EPSG:4326"
+    END # PROJECTION
+    EXTENT 22.943850 40.618106 22.963398 40.632503
+    FEATURE
+      POINTS
+        22.948662 40.626529
+        22.952252 40.623575
+        22.951894 40.622316
+        22.953119 40.618694
+        22.950210 40.603255
+        22.951225 40.600385
+
+      END
+    END # FEATURE
+    CLASS
+      NAME "Demo route"
+      STYLE
+        COLOR 230 90 30
+        WIDTH 3
+      END # STYLE
+    END # CLASS
+    METADATA
+      "wms_title"         "demo_route"
+      "ows_title"         "demo_route"
+      "gml_include_items" "all"
+    END # METADATA
+  END # LAYER
+
+  # 3) Points — a handful of Greek cities.
+  # NOTE: to also draw the city names you need a FONTSET + a LABEL block.
+  #       Bitmap fonts were removed in MapServer 8, so TEXT alone won't show.
+  LAYER
+    NAME "demo_cities"
+    TYPE POINT
+    STATUS ON
+    PROJECTION
+      "EPSG:4326"
+    END # PROJECTION
+    EXTENT 22.943850 40.618106 22.963398 40.632503
+    FEATURE
+      POINTS 23.7275 37.9838 END
+      TEXT "Athens"
+    END # FEATURE
+    FEATURE
+      POINTS 22.9444 40.6401 END
+      TEXT "Thessaloniki"
+    END # FEATURE
+    FEATURE
+      POINTS 21.7346 38.2466 END
+      TEXT "Patra"
+    END # FEATURE
+    FEATURE
+      POINTS 25.1442 35.3387 END
+      TEXT "Heraklion"
+    END # FEATURE
+    FEATURE
+      POINTS 20.8537 39.6650 END
+      TEXT "Ioannina"
+    END # FEATURE
+    FEATURE
+      POINTS 22.4179 39.6390 END
+      TEXT "Larissa"
+    END # FEATURE
+    FEATURE
+      POINTS 28.2176 36.4349 END
+      TEXT "Rhodes"
+    END # FEATURE
+    FEATURE
+      POINTS 22.1142 37.0389 END
+      TEXT "Kalamata"
+    END # FEATURE
+    FEATURE
+      POINTS 24.4083 40.9396 END
+      TEXT "Kavala"
+    END # FEATURE
+    CLASS
+      NAME "Demo cities"
+      STYLE
+        SYMBOL "circle"
+        SIZE 10
+        COLOR 200 30 30
+        OUTLINECOLOR 255 255 255
+        WIDTH 1.5
+      END # STYLE
+    END # CLASS
+    METADATA
+      "wms_title"         "demo_cities"
+      "ows_title"         "demo_cities"
+      "gml_include_items" "all"
+    END # METADATA
+  END # LAYER
+END # MAP

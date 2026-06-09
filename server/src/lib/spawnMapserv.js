@@ -15,9 +15,12 @@ function escapeForPosixRegex(s) {
 module.exports = function spawnMapserv(queryString, { method = 'GET' } = {}) {
   const wsEsc = escapeForPosixRegex(workspaceDir);
 
-  // Allow only mapfiles under workspaceDir:
-  // Example result: ^C:\\data\\maps\\.*\.map$
-  const safeMapPattern = `^${wsEsc}\\\\.*\\.map$`;
+  // Allow only mapfiles under workspaceDir.
+  // Cross-platform: accept either "\\" (Windows) or "/" (Linux/Docker) as the
+  // separator after the workspace path, e.g.:
+  //   Windows: ^C:\\data\\maps[\\/].*\.map$
+  //   Linux:   ^/data/maps[\\/].*\.map$
+  const safeMapPattern = `^${wsEsc}[\\\\/].*\\.map$`;
 
   // Populate CGI variables so MapServer can build OnlineResource when metadata is missing.
   let u;

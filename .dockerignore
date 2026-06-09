@@ -1,0 +1,19 @@
+# Keep the build context small and clean.
+.git
+.gitignore
+**/node_modules
+**/dist
+**/.angular
+**/coverage
+**/*.log
+npm-debug.log
+
+# Runtime data / local overrides (must NOT be baked into the image)
+workspace
+server/src/config.local.json
+
+# Editor / OS noise
+.vscode
+.idea
+.DS_Store
+Thumbs.db

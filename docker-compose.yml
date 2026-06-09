@@ -1,0 +1,25 @@
+# Mapfile Preview — one-command setup (no manual MapServer/Node install needed).
+#
+#   docker compose up -d --build     # build the image and start (first time)
+#   ->  open  http://localhost:4300
+#   docker compose down              # stop
+#
+services:
+  mapfile-preview:
+    build: .
+    image: mapfile-preview:latest
+    container_name: mapfile-preview
+    init: true
+    ports:
+      - "4300:4300"              # UI + API. Open http://localhost:4300
+    volumes:
+      - ./workspace:/data/maps   # put your .map files (and their data) here
+    environment:
+      TZ: "Europe/Athens"
+      # If you change the PUBLISHED port above (left side), also set APP_ORIGIN
+      # to match so the UI knows where the API is, e.g. for "8080:4300":
+      # APP_ORIGIN: "http://localhost:8080"
+      #
+      # Optional — Mapfile Teacher (Gemini). Set your own personal key to enable:
+      # GEMINI_API_KEY: "your-personal-key"
+    restart: unless-stopped

@@ -60,6 +60,9 @@ export class MapPaneComponent implements AfterViewInit, OnDestroy {
   /** Map-level projection, if found (fallback). */
   private mapProjection: string | null = null;
 
+  /** Map-level EXTENT from the mapfile (minx, miny, maxx, maxy). */
+  private mapExtent: [number, number, number, number] | null = null;
+
   /** Lazy-loaded proj4 instance (for reprojection from EPSG:4326 to mapfile CRS). */
   private proj4: any | null = null;
   private proj4Tried = false;
@@ -116,7 +119,8 @@ export class MapPaneComponent implements AfterViewInit, OnDestroy {
 
     await this.initApiOrigin();
 
-    this.L = await import('leaflet');
+    const leafletMod = await import('leaflet');
+    this.L = ((leafletMod as any).default ?? leafletMod) as typeof import('leaflet');
 
     // Optional plugin: used for client-side vector tiles from GeoJSON (WFS preview)
     // Requires: npm i leaflet.vectorgrid geojson-vt
@@ -223,7 +227,15 @@ export class MapPaneComponent implements AfterViewInit, OnDestroy {
     const names = this.parseLayerNames(content);
     console.debug('[MapPane] refreshFromMapfile → layer names:', names);
     this.setWmsLayers(names);
+    this.fitMapToExtent();
+  }
 
+  private fitMapToExtent() {
+    if (!this.map || !this.mapExtent || !this.isValidExtent(this.mapExtent)) return;
+    const proj = (this.mapProjection || 'EPSG:4326').toUpperCase();
+    if (proj !== 'EPSG:4326') return;
+    const [minx, miny, maxx, maxy] = this.mapExtent;
+    this.map.fitBounds([[miny, minx], [maxy, maxx]]);
   }
 
   /** Remove all current mapfile overlays (keep base OSM) */
@@ -394,13 +406,16 @@ export class MapPaneComponent implements AfterViewInit, OnDestroy {
       this.layerBboxCrs.clear();
       this.layerExtent.clear();
       this.mapProjection = null;
+      this.mapExtent = null;
 
       if (!content) return;
 
-      // --- MAP-level projection (fallback) ---
+      // --- MAP-level projection + extent (fallback) ---
       const mapBlock = content.match(/\bMAP\b[\s\S]*?\bEND\b\s*#\s*MAP\b/i)?.[0] || '';
       const mapProj = this.extractEpsgFromProjectionBlock(mapBlock);
       if (mapProj) this.mapProjection = mapProj;
+      const mapExt = this.extractExtent(mapBlock);
+      if (mapExt) this.mapExtent = mapExt;
 
       // --- LAYER blocks ---
       // Most Consortis mapfiles end layer blocks with: "END # LAYER".

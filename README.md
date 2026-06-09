@@ -1,5 +1,7 @@
 # MapFile Preview
 
+> 🐳 **Easiest setup (for non-developers):** run the ENTIRE app with **one** command via Docker — **no** manual MapServer or Node.js install, and no two terminals. See **[Chapter 8 — Run with Docker](#docker)**.
+
 ## 1. Project Overview
 
 **MapFile Preview** is a browser-based tool that helps you **edit MapServer mapfiles** and **immediately preview what they publish** (WMS/WFS). It includes a UI for editing text and viewing the map, and an API service that reads/writes mapfiles from a workspace folder, validates them with MapServer, and forwards preview requests to your MapServer installation.
@@ -380,12 +382,122 @@ When you're finished using the app:
 | Browser shows an error or "cannot reach the API" | The API (Terminal #1) isn't running, or you started the UI first | Make sure Terminal #1 is still open and shows `Server on http://localhost:4300`, then **refresh** the browser |
 | A window seems "frozen" with logs and won't accept typing | This is **normal** — it's the running app, not a freeze | Don't type in that window; use the **other** window for commands. Press `Ctrl + C` there only when you want to **stop** that part |
 
-## 8. Project Structure
+<a id="docker"></a>
+## 8. Run with Docker (easiest setup — no manual install)
+
+> **Who this is for:** non-developers (or anyone who wants the fastest setup). This path lets you **skip Chapters 4–7**: you don't install MapServer, Node.js, or open two terminals. The only thing you install **once** is Docker Desktop.
+
+### 8.1 Why Docker (the advantage)
+
+Docker bundles the whole application — **UI + API + MapServer + web server** — into a single, ready-to-run image. In practice that means:
+
+- **One install** (Docker Desktop) instead of three (MapServer + Node.js + Git), and no IIS/Apache setup.
+- **One command** (`docker compose up`) — no `npm ci` in two folders, no two terminals kept open.
+- **Nothing is installed on your computer** except Docker: MapServer and Node run *inside* the container and don't clutter your system.
+- **Same result on every machine** (Windows/Mac/Linux) — no more "it worked on mine".
+- **Clean removal:** a single `docker compose down` leaves nothing behind — no MapServer/Node to uninstall.
+
+### 8.2 Step 1 — Install Docker Desktop (one time)
+
+Download and install **Docker Desktop**:
+
+- Download (all operating systems): **https://www.docker.com/products/docker-desktop/**
+- Detailed install guide for **Windows**: **https://docs.docker.com/desktop/setup/install/windows-install/**
+- General instructions (Mac/Linux): **https://docs.docker.com/get-docker/**
+
+> After installing, **open Docker Desktop** and wait until you see the green **"Engine running"** at the bottom-left. That's all — no further configuration is needed.
+
+### 8.3 Step 2 — Get the project files
+
+Get the project files (exactly as in **Chapter 5 → Step 2**): either as a **ZIP** (**Code → Download ZIP** → right-click → *Extract All…*) or with **git clone**. Open the folder that contains `client`, `server`, and `docker-compose.yml`.
+
+### 8.4 Step 3 — Start (one command)
+
+1. Open a terminal **inside the project folder** (where `docker-compose.yml` lives):
+   - **Windows tip:** in the File Explorer address bar, while inside the folder, type `cmd` and press **Enter** — this opens a terminal in exactly that folder.
+2. Run:
+
+   ```bash
+   docker compose up -d --build
+   ```
+
+   - The **first time** it builds the image (downloads MapServer/Node, a few minutes — this happens **only once**).
+   - `-d` runs it in the background (no need to keep a terminal open).
+
+3. Open in your browser:
+
+   ```text
+   http://localhost:4300
+   ```
+
+   That's it. The UI **and** the API run on the **same** address (`4300`), so **no configuration is needed** — you only open this one link.
+
+### 8.5 Where do I put my mapfiles and data?
+
+In the project's **`workspace/`** folder (on your computer). It is mounted into the container as **`/data/maps`**, which means:
+
+- Any `.map` file (together with the data it references: shapefiles, rasters, etc.) that you drop into `workspace/` is immediately visible to the app.
+- On the first run an `example.map` is created automatically so you have something to open right away.
+
+> ⚠️ **About paths:** inside the container the OS is Linux. So paths inside your mapfiles must be **relative** (e.g. `SHAPEPATH "."`) or Linux-style under `/data/maps` — **not** absolute Windows paths (e.g. `C:\data\...`). If a mapfile points to an external database (PostGIS), make sure it is reachable from the container.
+
+### 8.6 Useful management commands
+
+| What you want | Command |
+|---|---|
+| Start | `docker compose up -d` |
+| Start after code changes | `docker compose up -d --build` |
+| Stop | `docker compose down` |
+| View logs (live) | `docker compose logs -f` |
+| Restart | `docker compose restart` |
+
+### 8.7 What's inside the image (technical)
+
+The single image contains and runs together:
+
+- the **API** (Node/Express), which also serves the **UI** (Angular build) on port `4300`;
+- **MapServer 8**: the binary for *validation* (called directly by the API) and a CGI endpoint via **Apache** for *preview* (called by the API internally — not exposed outside);
+- ready-made settings via environment variables (see **Chapter 6 — Configuration**). The Docker defaults are already correct (Linux paths), so **you don't need to change anything** to get started.
+
+### 8.8 Optional: Mapfile Teacher (Gemini) in Docker
+
+The Teacher is optional. To make it work inside Docker:
+
+1. In `docker-compose.yml`, under `environment`, provide your own **Gemini API key** (uncomment it):
+
+   ```yaml
+       environment:
+         GEMINI_API_KEY: "your-personal-key"
+   ```
+
+2. Put `MapServer.pdf` into the `workspace/` folder and, from the app's **Settings**, enable the Teacher pointing it to the path `/data/maps/MapServer.pdf`.
+3. Run `docker compose up -d` to apply the changes.
+
+### 8.9 Troubleshooting
+
+- **`http://localhost:4300` doesn't open** → make sure **Docker Desktop is running** ("Engine running"). Check the logs: `docker compose logs -f`.
+- **I want to change the port** → keep the internal `4300` and change only the **left** number in `ports`, AND set `APP_ORIGIN` so the UI knows where the API is. Example in `docker-compose.yml`:
+
+  ```yaml
+      ports:
+        - "8080:4300"
+      environment:
+        APP_ORIGIN: "http://localhost:8080"
+  ```
+
+  Then run `docker compose up -d` and open `http://localhost:8080`.
+- **The preview is blank or shows an error** → usually the mapfile points to data that isn't inside `workspace/`, or to a Windows path. Fix the paths as in **8.5**.
+
+## 9. Project Structure
 
 ```text
 .
-├─ client/          # UI (editor + map preview)
-├─ server/          # API (workspace, validation, WMS/WFS/CGI proxy, Teacher)
-├─ workspace/       # Local workspace artifacts (e.g., logs)
-└─ zip_project.bat  # Helper script (if used in your environment)
+├─ client/             # UI (editor + map preview)
+├─ server/             # API (workspace, validation, WMS/WFS/CGI proxy, Teacher)
+├─ workspace/          # Your mapfiles & data (mounted into the container as /data/maps)
+├─ docker/             # Docker support files (MapServer/Apache config, entrypoint, example.map)
+├─ Dockerfile          # Single all-in-one image (UI + API + MapServer)
+├─ docker-compose.yml  # One-command run (docker compose up -d --build)
+├─ .dockerignore       # Files excluded from the image build
+└─ zip_project.bat     # Helper script (if used in your environment)
 ```

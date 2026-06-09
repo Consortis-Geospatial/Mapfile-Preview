@@ -29,5 +29,19 @@ const { port, workspaceDir } = require('./config');
 
   app.use('/api', require('./routes/mpTeacher/mapserverTeacher'));
 
+  // Optionally serve the built Angular UI from the same origin as the API.
+  // Enabled by setting UI_DIST (used by the Docker image). In local dev this
+  // env var is unset, so this block is skipped and `ng serve` keeps serving the UI.
+  const uiDist = process.env.UI_DIST;
+  if (uiDist && fs.existsSync(uiDist)) {
+    app.use(express.static(uiDist));
+    // SPA fallback: send index.html for any non-API GET (client-side routing).
+    app.use((req, res, next) => {
+      if (req.method !== 'GET') return next();
+      if (req.path.startsWith('/api')) return next();
+      res.sendFile(path.join(uiDist, 'index.html'));
+    });
+  }
+
   app.listen(port, () => console.log(`Server on http://localhost:${port}`));
 })();
