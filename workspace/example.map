@@ -3,7 +3,7 @@ MAP
   STATUS ON
   SIZE 800 600
   UNITS DD
-  EXTENT 22.908039 40.596163 22.986231 40.653750
+  EXTENT 22.907701 40.589254 23.005719 40.646848
   IMAGETYPE "png24"
 
   PROJECTION
@@ -45,7 +45,7 @@ MAP
   # something on the map: a filled POLYGON, a LINE and POINTs.
   # ---------------------------------------------------------------------------
 
-  # 1) A semi-transparent polygon — a rough outline of the Peloponnese.
+  # 1) A semi-transparent polygon
   LAYER
     NAME "demo_region"
     TYPE POLYGON
@@ -53,7 +53,7 @@ MAP
     PROJECTION
       "EPSG:4326"
     END # PROJECTION
-    EXTENT 22.908039 40.596163 22.986231 40.653750
+    EXTENT 22.907701 40.589254 23.005719 40.646848
     # Make the fill semi-transparent so the basemap stays visible underneath.
     COMPOSITE
       OPACITY 45
@@ -85,7 +85,7 @@ MAP
     END # METADATA
   END # LAYER
 
-  # 2) A line — the main motorway axis (PATHE): Thessaloniki -> Athens -> Patra.
+  # 2) A line 
   LAYER
     NAME "demo_route"
     TYPE LINE
@@ -93,7 +93,7 @@ MAP
     PROJECTION
       "EPSG:4326"
     END # PROJECTION
-    EXTENT 22.908039 40.596163 22.986231 40.653750
+    EXTENT 22.907701 40.589254 23.005719 40.646848
     FEATURE
       POINTS
         22.948662 40.626529
@@ -119,9 +119,7 @@ MAP
     END # METADATA
   END # LAYER
 
-  # 3) Points — a handful of Greek cities.
-  # NOTE: to also draw the city names you need a FONTSET + a LABEL block.
-  #       Bitmap fonts were removed in MapServer 8, so TEXT alone won't show.
+  # 3) Points — a handful of Greek cities
   LAYER
     NAME "demo_cities"
     TYPE POINT
@@ -129,7 +127,7 @@ MAP
     PROJECTION
       "EPSG:4326"
     END # PROJECTION
-    EXTENT 22.908039 40.596163 22.986231 40.653750
+    EXTENT 22.907701 40.589254 23.005719 40.646848
     FEATURE
       POINTS 23.7275 37.9838 END
       TEXT "Athens"

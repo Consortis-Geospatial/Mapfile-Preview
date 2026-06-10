@@ -473,7 +473,98 @@ The Teacher is optional. To make it work inside Docker:
 2. Put `MapServer.pdf` into the `workspace/` folder and, from the app's **Settings**, enable the Teacher pointing it to the path `/data/maps/MapServer.pdf`.
 3. Run `docker compose up -d` to apply the changes.
 
-### 8.9 Troubleshooting
+### 8.9 Optional: Use your own MapServer with Docker
+
+By default the image bundles its own MapServer 8 (used both for **validation** and for **WMS/WFS preview**). If you already have a MapServer running — for example MS4W on your Windows machine, a remote server, or another container — you can point the app to it instead, without rebuilding the image.
+
+The app uses MapServer in two distinct ways, each controlled by its own environment variable:
+
+| Purpose | Variable | What it controls |
+|---|---|---|
+| **Validation** | `MAPSERV_PATH` | Path to the `mapserv` binary called directly |
+| **WMS/WFS preview** | `MAPSERV_URL` | HTTP URL of the MapServer CGI endpoint |
+
+You can override either or both in `docker-compose.yml`.
+
+---
+
+#### Option A — External MapServer for preview only (most common)
+
+If your MapServer already serves maps over HTTP (e.g. `http://192.168.1.50/cgi-bin/mapserv`), set `MAPSERV_URL`. The bundled binary is still used for validation.
+
+```yaml
+environment:
+  TZ: "Europe/Athens"
+  MAPSERV_URL: "http://192.168.1.50/cgi-bin/mapserv"   # ← your server
+```
+
+> **Note:** use the server's real IP address or hostname, **not** `localhost` — inside the container `localhost` refers to the container itself, not your host machine. On Windows/Mac you can use the special hostname `host.docker.internal` to reach your host:
+> ```yaml
+> MAPSERV_URL: "http://host.docker.internal/cgi-bin/mapserv"
+> ```
+
+---
+
+#### Option B — External MapServer for both validation and preview
+
+If you also want to replace the validation binary with your own, mount the `mapserv` binary into the container and set `MAPSERV_PATH`:
+
+```yaml
+volumes:
+  - ./workspace:/data/maps
+  - /path/to/your/mapserv:/usr/local/bin/mapserv-ext:ro   # mount your binary
+
+environment:
+  MAPSERV_PATH: "/usr/local/bin/mapserv-ext"
+  MAPSERV_URL:  "http://192.168.1.50/cgi-bin/mapserv"
+```
+
+> **Important:** the container runs **Linux (Debian)**. The binary you mount must be compiled for Linux — a Windows `mapserv.exe` will not work inside the container.
+
+---
+
+#### Option C — MapServer in a separate Docker container
+
+If your MapServer is also a Docker container, put both services in the same `docker-compose.yml` and let them share a network:
+
+```yaml
+services:
+  mapfile-preview:
+    build: .
+    ports:
+      - "4300:4300"
+    volumes:
+      - ./workspace:/data/maps
+    environment:
+      TZ: "Europe/Athens"
+      MAPSERV_URL: "http://my-mapserver/cgi-bin/mapserv"   # service name = hostname
+    networks:
+      - gis-net
+
+  my-mapserver:                        # your existing MapServer container
+    image: camptocamp/mapserver:latest  # replace with your actual image
+    volumes:
+      - ./workspace:/data/maps         # share the same mapfiles
+    networks:
+      - gis-net
+
+networks:
+  gis-net:
+```
+
+Docker automatically resolves `my-mapserver` (the service name) to the right IP inside the shared network. Run `docker compose up -d --build` as usual.
+
+---
+
+**Quick reference — what to change depending on what you need:**
+
+| I want… | What to set |
+|---|---|
+| Only preview → my MapServer | `MAPSERV_URL` in `docker-compose.yml` |
+| Validation too → my binary (Linux) | `MAPSERV_PATH` + mount the binary |
+| MapServer in another container | Shared network + `MAPSERV_URL` using the service name |
+
+### 8.10 Troubleshooting
 
 - **`http://localhost:4300` doesn't open** → make sure **Docker Desktop is running** ("Engine running"). Check the logs: `docker compose logs -f`.
 - **I want to change the port** → keep the internal `4300` and change only the **left** number in `ports`, AND set `APP_ORIGIN` so the UI knows where the API is. Example in `docker-compose.yml`:
